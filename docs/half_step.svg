@@ -141,7 +141,7 @@
 			<g id="Transition_CCW_C_to_Event.CCW" transform="translate(261,-13.5)">
 				<path d="M0 783 L23.73 783" class="st10"/>
 				<rect x="9.11602" y="778.2" width="8.10956" height="9.59985" class="st7"/>
-				<text x="9.12" y="785.4" class="st2">00</text>			</g>
+				<text x="9.12" y="785.4" class="st2">11</text>			</g>
 			<g id="Transition_Mid_to_CCW_C" transform="translate(189,-63)">
 				<path d="M0 792 C47.42 792 49.41 792 49.5 815.73 L49.5 816.09" class="st4"/>
 				<rect x="30.6133" y="788.178" width="8.10956" height="9.59985" class="st7"/>
@@ -157,7 +157,7 @@
 			<g id="Transition_CCW_C_to_CCW_C" transform="translate(229.5,0)">
 				<path d="M9 783 C27 801 -9 801 9 783" class="st11"/>
 				<rect x="4.94528" y="799.575" width="8.10956" height="9.59985" class="st6"/>
-				<text x="4.95" y="806.78" class="st2">10</text>			</g>
+				<text x="4.95" y="806.78" class="st2">01</text>			</g>
 			<!-- Automatic transitions from events or references -->
 			<g id="AutoTransition_Event.CW_to_Mid" transform="translate(175.5,-117)">
 				<path d="M-9 792 L-9 815.73" class="st12"/>			</g>
