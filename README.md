@@ -25,10 +25,14 @@ By having these invalid state transitions go to a starting state
 (`Start` and `Mid`), spurious events are avoided without complex code.
 
 #### No Debouncing?
-Because two (or four) state transitions in the same direction
-must occur prior to an event being reported, bouncing of a single
-pin will simply cause transitions between intermediate states,
-and will not cause an event.  Simple hack.
+Simple Hack! Because two (or four) state transitions in the same
+direction must occur prior to an event being reported, bouncing
+of a single pin will simply cause transitions between intermediate
+states, and will not cause an event.
+For example, if state is bouncing between `0b10` and `0b11`, at
+most one event will be generated, and only where the initial state
+was either `CW C`, or where the initial state was `CCW A`
+(but only in half-step mode).
 
 #### Half-step
 <img src="./docs/half_step.svg" width="100%" />
