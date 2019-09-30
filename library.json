@@ -1,0 +1,35 @@
+{
+    "name": "Software Quadrature Decoder",
+    "description": "State-machine based quadrature decoder.  Supports generation of events for full-step or half-step.",
+    "keywords": "quadrature,qdec,quadrature encoder,encoder,signal,pulse,state machine",
+    "authors": [
+        {
+            "name": "Henry Gabryjelski",
+            "url": "https://github.com/henrygab",
+            "maintainer": true
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SimpleHacks/QDEC.git"
+    },
+    "version": "0.1.0",
+    "license": "MIT",
+    "homepage": "http://github.com/SimpleHacks/QDEC/",
+    "frameworks": "arduino",
+    "platforms": "*",
+    "export": {
+        "exclude": [
+            "docs",
+            "extras"
+        ]
+    },
+    "build": {
+        "srcFilter": [
+            "+<*.c>",
+            "+<*.cpp>",
+            "+<*.h>"
+        ],
+        "libArchive": false
+    }
+}

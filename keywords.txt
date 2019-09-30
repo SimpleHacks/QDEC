@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map For QDEC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SimpleHacks	KEYWORD1
+QDecoder	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# QDEC methods
+begin	KEYWORD2
+update	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+# QDEC_EVENT
+QDECODER_EVENT_CW	LITERAL1
+QDECODER_EVENT_CCW	LITERAL1
+
+
