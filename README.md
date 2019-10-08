@@ -51,3 +51,18 @@ A single templated class provides two static functions:
    according to the state transition table, and report via the
    return value if an event occurred.
 
+## Sample usage
+See the library's samples.  The breadboard setup generally used
+is shown here.
+
+<img src="./docs/breadboard.svg" width="100%" />
+
+## Troubleshooting
+
+Are you getting clockwise events when turning the encoder
+counter-clockwise (and vice-versa)?  This happens because some
+encoder signals occur in reverse compared to other encoders.
+Luckily, the fix is simple.  Choose any of the following:
+1. swap the definitions of ROTARY_PIN_A and ROTARY_PIN_B
+2. change the order you pass the pins to the QDEC library
+3. swap the physical wiring to the Arduino pins

@@ -178,6 +178,7 @@ namespace SimpleHacks {
         const boolean  _useFullStep;
               uint8_t  _CurrentState;
     };
+
     SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB)
         : _pinA(pinA), _pinB(pinB), _useFullStep(false), _CurrentState(Internal::QDECODER_STATE_START) {};
 
@@ -186,9 +187,8 @@ namespace SimpleHacks {
 
     // The templated class is defined here.
     //
-    // The benefits of using a template are many. Here are just a few:
-    // * Entire library is a single header file, simplifying usage
-    // * Many optimizations:
+    // Some potential benefits to a template version:
+    // * Many optimizations, especially important on low-power boards:
     //   + inline-optimizations to avoid function calls
     //   + only static functions, so zero run-time memory allocation
     //   + code conditioned on template arguments is optimized away if
@@ -214,7 +214,9 @@ namespace SimpleHacks {
 
     public: // special members
         // all six special members are defined as deleted,
-        // as the templated version only uses static functions.
+        // as the templated version only uses static functions,
+        // and thus should never be instantiated.
+
         // destructor
         ~QDec() =delete;
         // parameterless (default) constructor
@@ -266,34 +268,7 @@ namespace SimpleHacks {
             return static_cast<QDECODER_EVENT>( nextStateWithEvents & Internal::QDECODER_EVENT_BITMASK );
         }
     };
-
-
-
 }
-
-
-// Fun fact: you can use =delete with templates, such as to disable
-//           automatic conversion of parameter types!
-//
-// template<T> void ExplicitSpecializationsOnly(T arg1) =delete;
-// template<T> void ExplicitSpecializationsOnly(int32_t arg1) {
-//     // do stuff...           
-// }
-// void Foo() {
-//     uint16_t u;
-//     int32_t s;
-//
-//     // The following call compiles, as it matches a defined template specialization 
-//     ExplicitSpecializationsOnly(s);
-//
-//     // The following call will not compile, as the generic template matches, but is indicated as deleted
-//     // use of unsigned integer, even of smaller size, will fail..
-//     // error - call to deleted function 'ExplicitSpecializationsOnly'
-//     // note: candidate function [with T = unsigned int]
-//     //       has been explicitly deleted
-//     // void ExplicitSpecializationsOnly(T arg1) =delete;
-//     ExplicitSpecializationsOnly(u);
-// }
 
 
 #endif // #ifndef __INC_SIMPLEHACKS_QDEC
