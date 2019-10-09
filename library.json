@@ -1,6 +1,6 @@
 {
-    "name": "Software Quadrature Decoder",
-    "description": "State-machine based quadrature decoder.  Supports generation of events for full-step or half-step.",
+    "name": "QDEC",
+    "description": "State-machine based quadrature decoder.  Supports generation of events for full-step or half-step.  MIT License.",
     "keywords": "quadrature,qdec,quadrature encoder,encoder,signal,pulse,state machine",
     "authors": [
         {
