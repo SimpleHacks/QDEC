@@ -8,6 +8,8 @@
 
 SimpleHacks	KEYWORD1
 QDecoder	KEYWORD1
+QDec        KEYWORD1
+QDECODER_EVENT KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

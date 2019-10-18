@@ -148,11 +148,12 @@ namespace SimpleHacks {
             digitalWrite(_pinB, HIGH); // turn on pullup resistor
         };
 
-        // updateAndParseEvent() reads the pins, changes state appropriately,
-        // and returns a clockwise or counter-clockise (aka anti-clockwise) event,
-        // as any detected state transition requires.
+        // update() reads the pins, changes state appropriately, and returns a
+        // clockwise or counter-clockise (aka anti-clockwise) event, as any
+        // detected state transition requires.
         // This function is designed to be callable either from an ISR or timer,
-        // and to be minimally
+        // and thus focuses on efficiency.  See https://github.com/SimpleHacks/QDEC/
+        // for explanation and state diagrams.
         SIMPLEHACKS_INLINE_ATTRIBUTE QDECODER_EVENT update() {
             // newPinState is defined so that it maps to the INDEX
             // to use in the state transition table.
@@ -239,10 +240,12 @@ namespace SimpleHacks {
             digitalWrite(_ARDUINO_PIN_B, HIGH); // turn on pullup resistor
         }
 
-        // Call update() periodically (such as via ISR on pin change,
-        // or on a timer fast enough to catch all changes).  This function
-        // will read the pin states, update internal state, and return
-        // a value from the enumeration SimpleHacks::QDECODER_EVENT.
+        // update() reads the pins, changes state appropriately, and returns a
+        // clockwise or counter-clockise (aka anti-clockwise) event, as any
+        // detected state transition requires.
+        // This function is designed to be callable either from an ISR or timer,
+        // and thus focuses on efficiency.  See https://github.com/SimpleHacks/QDEC/
+        // for explanation and state diagrams.
         SIMPLEHACKS_INLINE_ATTRIBUTE static SimpleHacks::QDECODER_EVENT update() {
             // On ARM using gcc 8.2, compiles to fewer than 100 bytes
             // (< 25 instructions), with inlining disabled.
