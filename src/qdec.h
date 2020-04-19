@@ -26,7 +26,7 @@
 #ifndef __INC_SIMPLEHACKS_QDEC
 #define __INC_SIMPLEHACKS_QDEC
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <stdint.h>
 
 #if defined(SIMPLEHACKS_QDECODER_NEVER_INLINE)
