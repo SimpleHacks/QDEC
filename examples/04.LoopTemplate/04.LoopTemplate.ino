@@ -39,7 +39,7 @@
  * When done, move to the next example.
  */
 
-#include "arduino.h"
+#include "Arduino.h"
 #include "qdec.h"
 
 using namespace ::SimpleHacks;

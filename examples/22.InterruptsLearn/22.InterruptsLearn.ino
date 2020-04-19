@@ -64,7 +64,7 @@
  *    What will happen when you rotate the encoder?
  */
 
-#include "arduino.h"
+#include "Arduino.h"
 #include "qdec.h"
 
 const int ROTARY_PIN_A = 3; // the first pin connected to the rotary encoder
