@@ -78,7 +78,7 @@ namespace SimpleHacks {
         
         static const uint8_t QDECODER_EVENT_BITMASK    = 0xC0; // events are the most significant two bits
         static const uint8_t QDECODER_STATE_BITMASK    = 0x07; // states are in the least significant three bits
-        static const uint8_t QDECODER_RESERVED_BITMAST = 0x31; // four bits still available for use in later versions of the library
+        static const uint8_t QDECODER_RESERVED_BITMASK = 0x31; // four bits still available for use in later versions of the library
 
         // Tables of state transitions + events.
         // See ./docs/full_step.svg for full-step state diagram.
