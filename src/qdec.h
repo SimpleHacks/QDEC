@@ -50,6 +50,7 @@
 // See the examples for more options...
 
 namespace SimpleHacks {
+    static const uint16_t QDECODER_INVALID_PIN = 0xFFFF;
 
     typedef enum : uint8_t {
         QDECODER_EVENT_NONE   = 0x00u,
@@ -64,6 +65,7 @@ namespace SimpleHacks {
     // between releases, whether in name, underlying values, existence, or behavior.
     */
     namespace Internal {
+
         // state is internal... needs never be exposed to callers
         typedef enum : uint8_t {
             QDECODER_STATE_START      = 0x00u,
@@ -129,7 +131,6 @@ namespace SimpleHacks {
     class QDecoder {
     public: // special members
         ~QDecoder() =default;
-        QDecoder() =delete;
         QDecoder(const QDecoder&) =delete;
         QDecoder& operator=(const QDecoder&) =delete;
         // move constructor -- not declared
@@ -137,17 +138,60 @@ namespace SimpleHacks {
         // move assignment operator -- not declared
         // QDecoder& operator=(QDecoder&&);
     public: // actual constructors
+        QDecoder();
+        QDecoder(int16_t pinA, int16_t pinB);
+        QDecoder(int16_t pinA, int16_t pinB, boolean useFullStep);
         QDecoder(uint16_t pinA, uint16_t pinB);
         QDecoder(uint16_t pinA, uint16_t pinB, boolean useFullStep);
     public: // User API
         // begin() sets the pins to INPUT_PULLUP
         SIMPLEHACKS_INLINE_ATTRIBUTE void begin() {
+            if (_isStarted)                    return; // only call begin() once
+            if (_pinA == QDECODER_INVALID_PIN) return;
+            if (_pinB == QDECODER_INVALID_PIN) return;
+
             pinMode(_pinA, INPUT_PULLUP);
             digitalWrite(_pinA, HIGH); // turn on pullup resistor
             pinMode(_pinB, INPUT_PULLUP);
             digitalWrite(_pinB, HIGH); // turn on pullup resistor
+            _CurrentState = Internal::QDECODER_STATE_START;
+            _isStarted = true;
         };
-
+        // end() allows stopping processing, and modifying options being used
+        SIMPLEHACKS_INLINE_ATTRIBUTE void end() {
+            _isStarted = false;
+            _CurrentState = Internal::QDECODER_STATE_START;
+        }
+        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getPinA() const {
+            return _pinA;
+        }
+        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getPinB() const {
+            return _pinB;
+        }
+        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getUseFullStep() const {
+            return _useFullStep;
+        }
+        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getIsStarted() const {
+            return _isStarted;
+        }
+        // Can only set options if QDEC is stopped (or never started)
+        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinA(uint16_t pin) {
+            if (_isStarted) return false;
+            _pinA = pin;
+            return true;
+        }
+        // Can only set options if QDEC is stopped (or never started)
+        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinB(uint16_t pin) {
+            if (_isStarted) return false;
+            _pinB = pin;
+            return true;
+        }
+        // Can only set options if QDEC is stopped (or never started)
+        SIMPLEHACKS_INLINE_ATTRIBUTE bool setFullStep(bool useFullStep) {
+            if (_isStarted) return false;
+            _useFullStep = useFullStep;
+            return true;
+        }
         // update() reads the pins, changes state appropriately, and returns a
         // clockwise or counter-clockise (aka anti-clockwise) event, as any
         // detected state transition requires.
@@ -155,6 +199,8 @@ namespace SimpleHacks {
         // and thus focuses on efficiency.  See https://github.com/SimpleHacks/QDEC/
         // for explanation and state diagrams.
         SIMPLEHACKS_INLINE_ATTRIBUTE QDECODER_EVENT update() {
+            if (!_isStarted) return QDECODER_EVENT_NONE;
+
             // newPinState is defined so that it maps to the INDEX
             // to use in the state transition table.
             // The below three lines optimize well on modern compilers.
@@ -174,17 +220,36 @@ namespace SimpleHacks {
          };
     
     private:
-        const uint16_t _pinA;
-        const uint16_t _pinB;
-        const boolean  _useFullStep;
-              uint8_t  _CurrentState;
+                 uint16_t _pinA;
+                 uint16_t _pinB;
+                 boolean  _useFullStep;
+        volatile boolean  _isStarted; // could be written from ISR
+                 uint8_t  _CurrentState;
     };
 
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB)
-        : _pinA(pinA), _pinB(pinB), _useFullStep(false), _CurrentState(Internal::QDECODER_STATE_START) {};
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder() :
+        _pinA(QDECODER_INVALID_PIN),
+        _pinB(QDECODER_INVALID_PIN),
+        _useFullStep(false),
+        _isStarted(false),
+        _CurrentState(Internal::QDECODER_STATE_START)
+        {};
 
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB, boolean useFullStep)
-        : _pinA(pinA), _pinB(pinB), _useFullStep(useFullStep), _CurrentState(Internal::QDECODER_STATE_START) {};
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB) :
+        _pinA(pinA),
+        _pinB(pinB),
+        _useFullStep(false),
+        _isStarted(false),
+        _CurrentState(Internal::QDECODER_STATE_START)
+        {};
+
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB, boolean useFullStep) :
+        _pinA(pinA),
+        _pinB(pinB),
+        _useFullStep(useFullStep),
+        _isStarted(false),
+        _CurrentState(Internal::QDECODER_STATE_START)
+        {};
 
     // The templated class is defined here.
     //
