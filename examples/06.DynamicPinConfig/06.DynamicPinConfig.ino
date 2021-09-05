@@ -22,7 +22,9 @@
 /* Difference from 04.LoopNamespace
  *  
  * parameterless qdec constructor used (pins not specified)
+ * configuration dynamically changes (pins and half-step vs. full-step)
  * 
+ * Upload and watch serial console, rotating encoder with each configuration.
  *
  * Move to the next example.
  */
