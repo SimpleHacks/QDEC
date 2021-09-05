@@ -118,8 +118,8 @@ void HandleFakeConfigurationChange(void) {
 
     qdec.end();
     Serial.println("Emulating input being disabled"); // could also occur transitioning to low-power
-    qdec.setPinA(QDECODER_INVALID_PIN); // only allowed when not started
-    qdec.setPinB(QDECODER_INVALID_PIN); // only allowed when not started
+    qdec.setPinA(QDecoder::QDECODER_INVALID_PIN); // only allowed when not started
+    qdec.setPinB(QDecoder::QDECODER_INVALID_PIN); // only allowed when not started
 
   } else if ((!wasStarted) && (timePassed > 2000)) {
     lastConfigured = now;

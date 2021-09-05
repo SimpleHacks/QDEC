@@ -50,7 +50,6 @@
 // See the examples for more options...
 
 namespace SimpleHacks {
-    static const uint16_t QDECODER_INVALID_PIN = 0xFFFF;
 
     typedef enum : uint8_t {
         QDECODER_EVENT_NONE   = 0x00u,
@@ -129,6 +128,8 @@ namespace SimpleHacks {
     }
 
     class QDecoder {
+    public:
+        static const uint16_t QDECODER_INVALID_PIN = 0xFFFF;
     public: // special members
         ~QDecoder() =default;
         QDecoder(const QDecoder&) =delete;
