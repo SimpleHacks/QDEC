@@ -236,6 +236,22 @@ namespace SimpleHacks {
         _CurrentState(Internal::QDECODER_STATE_START)
         {};
 
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(int16_t pinA, int16_t pinB) :
+        _pinA(pinA),
+        _pinB(pinB),
+        _useFullStep(false),
+        _isStarted(false),
+        _CurrentState(Internal::QDECODER_STATE_START)
+        {};
+
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(int16_t pinA, int16_t pinB, boolean useFullStep) :
+        _pinA(pinA),
+        _pinB(pinB),
+        _useFullStep(useFullStep),
+        _isStarted(false),
+        _CurrentState(Internal::QDECODER_STATE_START)
+        {};
+
     SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB) :
         _pinA(pinA),
         _pinB(pinB),
