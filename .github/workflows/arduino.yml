@@ -57,9 +57,6 @@ jobs:
           - esp32:esp32:esp32s3                  # ESP32S3 Dev Module
 
           # Arduino MBED-based devices
-          # Temporarily disabled ... 
-          # .../src/qdec.h:141:73: error: decltype cannot resolve address of overloaded function
-          # typedef typename Internal::deduceArduinoPinType<decltype(digitalRead)>::type SIMPLEHACKS_PIN_TYPE;
           - arduino:mbed_edge:edge_control       # Arduino Edge Control
           - arduino:mbed_nano:nano33ble          # Arduino Nano 33 BLE
           - arduino:mbed_nano:nanorp2040connect  # Arduino Nano RP2040 Connect
