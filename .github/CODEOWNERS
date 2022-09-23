@@ -1,0 +1,6 @@
+
+# Require review of any changes to files
+# under .github ... including issue templates,
+# workflows, etc.
+/.github/ @henrygab
+
