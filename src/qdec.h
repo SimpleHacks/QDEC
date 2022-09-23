@@ -125,11 +125,29 @@ namespace SimpleHacks {
             // 7 = CCW_C
             {QDECODER_STATE_MID,   QDECODER_STATE_CCW_C, QDECODER_STATE_MID,   QDECODER_STATE_START | QDECODER_EVENT_CCW},
         };
+
+        // the first template is the fallback, and will fail
+        // to compile because structure is declared but not defined,
+        // so no way to access member `type`.
+        template <typename> struct deduceArduinoPinType;
+        // the second template matches a function with a single
+        // parameter, and allows access to the type of that parameter.
+        // (defined to match prototype of `digitalRead` function)
+        template <typename FUNC, typename PARAM>
+        struct deduceArduinoPinType<FUNC(PARAM)>
+        { using type = PARAM; };
     }
+    // Deduce the type to be used to store a pin
+    // WORKAROUND: MBED OS BSPs define `pin_size_t` (huzzah!)
+    #if defined(__MBED__)
+        #define SIMPLEHACKS_PIN_TYPE pin_size_t
+    #else
+        typedef typename Internal::deduceArduinoPinType<decltype(digitalRead)>::type SIMPLEHACKS_PIN_TYPE;
+    #endif
 
     class QDecoder {
     public:
-        static const uint16_t QDECODER_INVALID_PIN = 0xFFFF;
+        static const SIMPLEHACKS_PIN_TYPE QDECODER_INVALID_PIN = (SIMPLEHACKS_PIN_TYPE)-1;
     public: // special members
         ~QDecoder() =default;
         QDecoder(const QDecoder&) =delete;
@@ -140,10 +158,8 @@ namespace SimpleHacks {
         // QDecoder& operator=(QDecoder&&);
     public: // actual constructors
         QDecoder();
-        QDecoder(int16_t pinA, int16_t pinB);
-        QDecoder(int16_t pinA, int16_t pinB, boolean useFullStep);
-        QDecoder(uint16_t pinA, uint16_t pinB);
-        QDecoder(uint16_t pinA, uint16_t pinB, boolean useFullStep);
+        QDecoder(SIMPLEHACKS_PIN_TYPE pinA, SIMPLEHACKS_PIN_TYPE pinB);
+        QDecoder(SIMPLEHACKS_PIN_TYPE pinA, SIMPLEHACKS_PIN_TYPE pinB, boolean useFullStep);
     public: // User API
         // begin() sets the pins to INPUT_PULLUP
         SIMPLEHACKS_INLINE_ATTRIBUTE void begin() {
@@ -221,11 +237,11 @@ namespace SimpleHacks {
          };
     
     private:
-                 uint16_t _pinA;
-                 uint16_t _pinB;
-                 boolean  _useFullStep;
-        volatile boolean  _isStarted; // could be written from ISR
-                 uint8_t  _CurrentState;
+                 SIMPLEHACKS_PIN_TYPE _pinA;
+                 SIMPLEHACKS_PIN_TYPE _pinB;
+                 boolean              _useFullStep;
+        volatile boolean              _isStarted; // could be written from ISR
+                 uint8_t              _CurrentState;
     };
 
     SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder() :
@@ -236,7 +252,7 @@ namespace SimpleHacks {
         _CurrentState(Internal::QDECODER_STATE_START)
         {};
 
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(int16_t pinA, int16_t pinB) :
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(SIMPLEHACKS_PIN_TYPE pinA, SIMPLEHACKS_PIN_TYPE pinB) :
         _pinA(pinA),
         _pinB(pinB),
         _useFullStep(false),
@@ -244,23 +260,7 @@ namespace SimpleHacks {
         _CurrentState(Internal::QDECODER_STATE_START)
         {};
 
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(int16_t pinA, int16_t pinB, boolean useFullStep) :
-        _pinA(pinA),
-        _pinB(pinB),
-        _useFullStep(useFullStep),
-        _isStarted(false),
-        _CurrentState(Internal::QDECODER_STATE_START)
-        {};
-
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB) :
-        _pinA(pinA),
-        _pinB(pinB),
-        _useFullStep(false),
-        _isStarted(false),
-        _CurrentState(Internal::QDECODER_STATE_START)
-        {};
-
-    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(uint16_t pinA, uint16_t pinB, boolean useFullStep) :
+    SIMPLEHACKS_INLINE_ATTRIBUTE QDecoder::QDecoder(SIMPLEHACKS_PIN_TYPE pinA, SIMPLEHACKS_PIN_TYPE pinB, boolean useFullStep) :
         _pinA(pinA),
         _pinB(pinB),
         _useFullStep(useFullStep),
@@ -292,7 +292,7 @@ namespace SimpleHacks {
     //   can be determined at compile-time.  This is the reason the
     //   class-based implementation is provided.
     //
-    template <uint32_t _ARDUINO_PIN_A, uint32_t _ARDUINO_PIN_B, uint32_t _USE_FULL_STEP = 0>
+    template <SIMPLEHACKS_PIN_TYPE _ARDUINO_PIN_A, SIMPLEHACKS_PIN_TYPE _ARDUINO_PIN_B, uint32_t _USE_FULL_STEP = 0>
     class QDec {
 
     public: // special members
@@ -357,6 +357,3 @@ namespace SimpleHacks {
 
 
 #endif // #ifndef __INC_SIMPLEHACKS_QDEC
-
-
-
