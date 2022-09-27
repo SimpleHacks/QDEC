@@ -2,12 +2,12 @@ name: Compile Sketches
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "workflow2" ]
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #   branches: [ "main", "workflow2" ]
   pull_request:
-    branches: [ "main", "workflow2" ]
-  # Allows you to run this workflow manually from the Actions tab
+  #   branches: [ "main", "workflow2" ]
+  # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
 
 env:
