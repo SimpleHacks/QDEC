@@ -1,0 +1,360 @@
+          # =======================================================================================
+          # ***************************************************************************************
+          # =======================================================================================
+          # Default Arduino BSP support
+          # BSP URL -- https://downloads.arduino.cc/packages/package_index.json
+          # 
+          # arduino:avr           -- https://raw.githubusercontent.com/arduino/ArduinoCore-avr/master/boards.txt
+          # arduino:megaavr       -- https://raw.githubusercontent.com/arduino/ArduinoCore-megaavr/master/boards.txt
+          # arduino:sam           -- https://raw.githubusercontent.com/arduino/ArduinoCore-sam/master/boards.txt
+          # arduino:samd          -- https://raw.githubusercontent.com/arduino/ArduinoCore-samd/master/boards.txt
+          # arduino:mbed_edge     -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_nano     -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_portenta -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_rp2040   -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_nicla    -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # ... and intel, microsoft, others ...
+          # =======================================================================================
+
+          # =======================================================================================
+          # arduino:avr -- https://github.com/arduino/ArduinoCore-samd/blob/master/boards.txt
+          # SAMD support disabled -- See issue #7 (https://github.com/SimpleHacks/QDEC/issues/7)
+          # =======================================================================================
+          arduino:avr:yun                    # Arduino Yún
+          arduino:avr:uno                    # Arduino Uno
+          arduino:avr:unomini                # Arduino Uno Mini
+          arduino:avr:diecimila              # Arduino Duemilanove or Diecimila
+          arduino:avr:nano                   # Arduino Nano
+          arduino:avr:mega                   # Arduino Mega or Mega 2560
+          arduino:avr:megaADK                # Arduino Mega ADK
+          arduino:avr:leonardo               # Arduino Leonardo
+          arduino:avr:leonardoeth            # Arduino Leonardo ETH
+          arduino:avr:micro                  # Arduino Micro
+          arduino:avr:esplora                # Arduino Esplora
+          arduino:avr:mini                   # Arduino Mini w/ ATmega328P
+          arduino:avr:mini:cpu=atmega328     # Arduino Mini w/ ATmega328P
+          arduino:avr:mini:cpu=atmega168     # Arduino Mini w/ ATmega168
+          arduino:avr:ethernet               # Arduino Ethernet
+          arduino:avr:fio                    # Arduino Fio
+          arduino:avr:bt                     # Arduino BT
+          arduino:avr:bt:cpu=atmega328       # Arduino BT w/ ATmega328P
+          arduino:avr:bt:cpu=atmega168       # Arduino BT w/ ATmega168
+          arduino:avr:LilyPadUSB             # LilyPad Arduino USB
+          arduino:avr:lilypad                # LilyPad Arduino
+          arduino:avr:lilypad:cpu=atmega328  # LilyPad Arduino w/ ATmega328P
+          arduino:avr:lilypad:cpu=atmega168  # LilyPad Arduino w/ ATmega168
+          arduino:avr:pro                    # Arduino Pro or Pro Mini
+          arduino:avr:pro:cpu=16MHzatmega328 # Arduino Pro or Pro Mini w/ ATmega 328P @ 16MHz
+          arduino:avr:pro:cpu=8MHzatmega328  # Arduino Pro or Pro Mini w/ ATmega 328P @ 8MHz
+          arduino:avr:pro:cpu=16MHzatmega168 # Arduino Pro or Pro Mini w/ ATmega 168
+          arduino:avr:pro:cpu=8MHzatmega168  # Arduino Pro or Pro Mini w/ ATmega 168
+          arduino:avr:atmegang               # Arduino NG or older
+          arduino:avr:atmegang:cpu=atmega168 # Arduino NG or older w/ ATmega168
+          arduino:avr:atmegang:cpu=atmega8   # Arduino NG or older w/ ATmega8
+          arduino:avr:robotControl           # Arduino Robot Control
+          arduino:avr:robotMotor             # Arduino Robot Motor
+          arduino:avr:gemma                  # Arduino Gemma
+          arduino:avr:circuitplay32u4cat     # Adafruit Circuit Playground
+          arduino:avr:yunmini                # Arduino Yún Mini
+          arduino:avr:chiwawa                # Arduino Industrial 101
+          arduino:avr:one                    # Linino One
+          arduino:avr:unowifi                # Arduino Uno WiFi
+
+          # =======================================================================================
+          # arduino:megaavr       -- https://raw.githubusercontent.com/arduino/ArduinoCore-megaavr/master/boards.txt
+          # =======================================================================================
+          arduino:megaavr:uno2018            # Arduino Uno WiFi Rev2
+          arduino:megaavr:nona4809           # Arduino Nano Every
+
+          # =======================================================================================
+          # arduino:sam           -- https://raw.githubusercontent.com/arduino/ArduinoCore-sam/master/boards.txt
+          # =======================================================================================
+          arduino:sam:arduino_due_x_dbg      # Arduino Due (Programming Port)
+          arduino:sam:arduino_due_x          # Arduino Due (Native USB Port)
+
+          # =======================================================================================
+          # arduino:samd          -- https://raw.githubusercontent.com/arduino/ArduinoCore-samd/master/boards.txt
+          # =======================================================================================
+          arduino:samd:arduino_zero_edbg             # Arduino Zero (Programming Port)
+          arduino:samd:arduino_zero_native           # Arduino Zero (Native USB Port)
+          arduino:samd:mkr1000                       # Arduino MKR1000
+          arduino:samd:mkrzero                       # Arduino MKRZERO
+          arduino:samd:mkrwifi1010                   # Arduino MKR WiFi 1010
+          arduino:samd:nano_33_iot                   # Arduino NANO 33 IoT
+          arduino:samd:mkrfox1200                    # Arduino MKR FOX 1200
+          arduino:samd:mkrwan1300                    # Arduino MKR WAN 1300
+          arduino:samd:mkrwan1310                    # Arduino MKR WAN 1310
+          arduino:samd:mkrgsm1400                    # Arduino MKR GSM 1400
+          arduino:samd:mkrnb1500                     # Arduino MKR NB 1500
+          arduino:samd:mkrvidor4000                  # Arduino MKR Vidor 4000
+          arduino:samd:adafruit_circuitplayground_m0 # Adafruit Circuit Playground Express
+          arduino:samd:mzero_pro_bl_dbg              # Arduino M0 Pro (Programming Port)
+          arduino:samd:mzero_pro_bl                  # Arduino M0 Pro (Native USB Port)
+          arduino:samd:mzero_bl                      # Arduino M0
+          arduino:samd:tian                          # Arduino Tian
+          arduino:samd:tian_cons                     # Arduino Tian
+
+          # =======================================================================================
+          # arduino:mbed_edge     -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_nano     -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_portenta -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_rp2040   -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # arduino:mbed_nicla    -- https://raw.githubusercontent.com/arduino/ArduinoCore-mbed/master/boards.txt
+          # MBED_* temporarily disabled -- See issue #7 (https://github.com/SimpleHacks/QDEC/issues/7)
+          # =======================================================================================
+          arduino:mbed_edge:edge_control       # Arduino Edge Control
+          arduino:mbed_nano:nano33ble          # Arduino Nano 33 BLE
+          arduino:mbed_nano:nanorp2040connect  # Arduino Nano RP2040 Connect
+          arduino:mbed_portenta:envie_m7       # Arduino Portenta H7 (M7 core)
+          arduino:mbed_portenta:envie_m4       # Arduino Portenta H7 (M4 core)
+          arduino:mbed_portenta:portenta_x8    # Arduino Portenta X8
+          arduino:mbed_rp2040:pico             # Raspberry Pi Pico
+          arduino:mbed_nicla:nicla_sense       # Nicla Sense ME
+          arduino:mbed_nicla:nicla_vision      # Nicla Vision
+
+          # =======================================================================================
+          # arduino:nrf52         -- https://raw.githubusercontent.com/arduino/ArduinoCore-primo/master/boards.txt
+          # Explicitly NOT supported ... compiler too old ...
+          # C++11 added "move constructor", and this compiler doesn't support that(!)
+          # =======================================================================================
+          arduino:nrf52:primo                  # Arduino Primo
+          arduino:nrf52:primo_core             # Arduino Primo Core
+
+          # =======================================================================================
+          # ***************************************************************************************
+          # =======================================================================================
+          # ESP8266 - Community-driven BSP support
+          # BSP URL -- http://arduino.esp8266.com/stable/package_esp8266com_index.json
+          # esp8266:esp8266       -- https://raw.githubusercontent.com/esp8266/Arduino/master/boards.txt
+          # =======================================================================================
+          esp8266:esp8266:generic             # Generic ESP8266 Module
+          esp8266:esp8266:esp8285             # Generic ESP8285 Module
+          esp8266:esp8266:gen4iod             # 4D Systems gen4 IoD Range
+          esp8266:esp8266:huzzah              # Adafruit Feather HUZZAH ESP8266
+          esp8266:esp8266:wifi_slot           # Amperka WiFi Slot
+          esp8266:esp8266:esp8266             # Arduino
+          esp8266:esp8266:espmxdevkit         # DOIT ESP-Mx DevKit (ESP8285)
+          esp8266:esp8266:oak                 # Digistump Oak
+          esp8266:esp8266:espduino            # ESPDuino (ESP-13 Module)
+          esp8266:esp8266:espectro            # ESPectro Core
+          esp8266:esp8266:espino              # ESPino (ESP-12 Module)
+          esp8266:esp8266:espresso_lite_v1    # ESPresso Lite 1.0
+          esp8266:esp8266:espresso_lite_v2    # ESPresso Lite 2.0
+          esp8266:esp8266:sonoff              # ITEAD Sonoff
+          esp8266:esp8266:inventone           # Invent One
+          esp8266:esp8266:d1_mini             # LOLIN(WEMOS) D1 R2 & mini
+          esp8266:esp8266:d1_mini_clone       # LOLIN(WEMOS) D1 mini (clone)
+          esp8266:esp8266:d1_mini_lite        # LOLIN(WEMOS) D1 mini Lite
+          esp8266:esp8266:d1_mini_pro         # LOLIN(WEMOS) D1 mini Pro
+          esp8266:esp8266:d1                  # LOLIN(WeMos) D1 R1
+          esp8266:esp8266:agruminolemon       # Lifely Agrumino Lemon v4
+          esp8266:esp8266:nodemcu             # NodeMCU 0.9 (ESP-12 Module)
+          esp8266:esp8266:nodemcuv2           # NodeMCU 1.0 (ESP-12E Module)
+          esp8266:esp8266:modwifi             # Olimex MOD-WIFI-ESP8266(-DEV)
+          esp8266:esp8266:phoenix_v1          # Phoenix 1.0
+          esp8266:esp8266:phoenix_v2          # Phoenix 2.0
+          esp8266:esp8266:eduinowifi          # Schirmilabs Eduino WiFi
+          esp8266:esp8266:wiolink             # Seeed Wio Link
+          esp8266:esp8266:blynk               # SparkFun Blynk Board
+          esp8266:esp8266:thing               # SparkFun ESP8266 Thing
+          esp8266:esp8266:thingdev            # SparkFun ESP8266 Thing Dev
+          esp8266:esp8266:esp210              # SweetPea ESP-210
+          esp8266:esp8266:espinotee           # ThaiEasyElec's ESPino
+          esp8266:esp8266:wifi_kit_8          # WiFi Kit 8
+          esp8266:esp8266:wifiduino           # WiFiduino
+          esp8266:esp8266:wifinfo             # WifInfo
+          esp8266:esp8266:cw01                # XinaBox CW01
+
+          # =======================================================================================
+          # ***************************************************************************************
+          # =======================================================================================
+          # Espressif ESP32 BSP
+          # BSP URL -- https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          # esp32:esp32 -- https://github.com/espressif/arduino-esp32/blob/master/boards.txt
+          esp32:esp32:esp32s3                                 # ESP32S3 Dev Module
+          esp32:esp32:esp32c3                                 # ESP32C3 Dev Module
+          esp32:esp32:esp32s2                                 # ESP32S2 Dev Module
+          esp32:esp32:esp32                                   # ESP32 Dev Module
+          esp32:esp32:esp32da                                 # ESP32-WROOM-DA Module
+          esp32:esp32:esp32wrover                             # ESP32 Wrover Module
+          esp32:esp32:pico32                                  # ESP32 PICO-D4
+          esp32:esp32:esp32s3box                              # ESP32-S3-Box
+          esp32:esp32:esp32s3usbotg                           # ESP32-S3-USB-OTG
+          esp32:esp32:esp32s3camlcd                           # ESP32S3 CAM LCD
+          esp32:esp32:esp32s2usb                              # ESP32S2 Native USB
+          esp32:esp32:esp32wroverkit                          # ESP32 Wrover Kit (all versions)
+          esp32:esp32:tinypico                                # UM TinyPICO
+          esp32:esp32:feathers2                               # UM FeatherS2
+          esp32:esp32:feathers2neo                            # UM FeatherS2 Neo
+          esp32:esp32:tinys2                                  # UM TinyS2
+          esp32:esp32:rmp                                     # UM RMP
+          esp32:esp32:tinys3                                  # UM TinyS3
+          esp32:esp32:pros3                                   # UM PROS3
+          esp32:esp32:feathers3                               # UM FeatherS3
+          esp32:esp32:S_ODI_Ultra                             # S.ODI Ultra v1
+          esp32:esp32:micros2                                 # microS2
+          esp32:esp32:magicbit                                # MagicBit
+          esp32:esp32:turta_iot_node                          # Turta IoT Node
+          ttgo-esp32:esp32:lora32                             # TTGO LoRa32-OLED
+          ttgo-esp32:esp32:t1                                 # TTGO T1
+          ttgo-t7-v13-esp32:esp32:mini32                      # TTGO T7 V1.3 Mini32
+          ttgo-t7-v14-esp32:esp32:mini32                      # TTGO T7 V1.4 Mini32
+          ttgo-t-oi-esp32:esp32:plus                          # TTGO T-OI PLUS RISC-V ESP32-C3
+          esp32:esp32:cw02                                    # XinaBox CW02
+          esp32:esp32:esp32thing                              # SparkFun ESP32 Thing
+          esp32:esp32:esp32thing_plus                         # SparkFun ESP32 Thing Plus
+          esp32:esp32:esp32thing_plus_c                       # SparkFun ESP32 Thing Plus C
+          esp32:esp32:sparkfun_esp32s2_thing_plus             # SparkFun ESP32-S2 Thing Plus
+          esp32:esp32:esp32micromod                           # SparkFun ESP32 MicroMod
+          sparkfun_lora_gateway_1-esp32:esp32:channel         # SparkFun LoRa Gateway 1-Channel
+          esp32:esp32:sparkfun_esp32_iot_redboard             # SparkFun ESP32 IoT RedBoard
+          esp32:esp32:nina_w10                                # u-blox NINA-W10 series (ESP32)
+          esp32:esp32:nora_w10                                # u-blox NORA-W10 series (ESP32-S3)
+          widora-esp32:esp32:air                              # Widora AIR
+          esp32:esp32:esp320                                  # Electronic SweetPeas - ESP320
+          esp32:esp32:nano32                                  # Nano32
+          esp32:esp32:d32                                     # LOLIN D32
+          esp32:esp32:d32_pro                                 # LOLIN D32 PRO
+          esp32:esp32:lolin_c3_mini                           # LOLIN C3 Mini
+          esp32:esp32:lolin_s2_mini                           # LOLIN S2 Mini
+          esp32:esp32:lolin_s2_pico                           # LOLIN S2 PICO
+          esp32:esp32:lolin_s3                                # LOLIN S3
+          esp32:esp32:lolin32                                 # WEMOS LOLIN32
+          lolin32-esp32:esp32:lite                            # WEMOS LOLIN32 Lite
+          esp32:esp32:pocket_32                               # Dongsen Tech Pocket 32
+          esp32:esp32:WeMosBat                                # WeMos WiFi&Bluetooth Battery
+          esp32:esp32:espea32                                 # ESPea32
+          esp32:esp32:quantum                                 # Noduino Quantum
+          esp32:esp32:node32s                                 # Node32s
+          esp32:esp32:hornbill32dev                           # Hornbill ESP32 Dev
+          esp32:esp32:hornbill32minima                        # Hornbill ESP32 Minima
+          esp32:esp32:dfrobot_beetle_esp32c3                  # DFRobot Beetle ESP32-C3
+          esp32:esp32:dfrobot_firebeetle2_esp32s3             # DFRobot Firebeetle 2 ESP32-S3
+          esp32:esp32:firebeetle32                            # FireBeetle-ESP32
+          intorobot-esp32:esp32:fig                           # IntoRobot Fig
+          esp32:esp32:onehorse32dev                           # Onehorse ESP32 Dev Module
+          esp32:esp32:featheresp32                            # Adafruit ESP32 Feather
+          esp32:esp32:adafruit_metro_esp32s2                  # Adafruit Metro ESP32-S2
+          esp32:esp32:adafruit_magtag29_esp32s2               # Adafruit MagTag 2.9"
+          esp32:esp32:adafruit_funhouse_esp32s2               # Adafruit FunHouse
+          esp32:esp32:adafruit_feather_esp32s2                # Adafruit Feather ESP32-S2
+          esp32:esp32:adafruit_feather_esp32s2_tft            # Adafruit Feather ESP32-S2 TFT
+          esp32:esp32:adafruit_qtpy_esp32s2                   # Adafruit QT Py ESP32-S2
+          esp32:esp32:adafruit_qtpy_esp32c3                   # Adafruit QT Py ESP32-C3
+          esp32:esp32:adafruit_qtpy_esp32_pico                # Adafruit QT Py ESP32
+          esp32:esp32:adafruit_feather_esp32_v2               # Adafruit Feather ESP32 V2
+          esp32:esp32:adafruit_feather_esp32s3                # Adafruit Feather ESP32-S3 2MB PSRAM
+          esp32:esp32:adafruit_feather_esp32s3_nopsram        # Adafruit Feather ESP32-S3 No PSRAM
+          esp32:esp32:adafruit_feather_esp32s3_tft            # Adafruit Feather ESP32-S3 TFT
+          esp32:esp32:adafruit_qtpy_esp32s3_nopsram           # Adafruit QT Py ESP32-S3 No PSRAM
+          esp32:esp32:adafruit_itsybitsy_esp32                # Adafruit ItsyBitsy ESP32
+          nodemcu-esp32:esp32:32s                             # NodeMCU-32S
+          esp32:esp32:mhetesp32devkit                         # MH ET LIVE ESP32DevKIT
+          esp32:esp32:mhetesp32minikit                        # MH ET LIVE ESP32MiniKit
+          esp32vn-iot-esp32:esp32:uno                         # ESP32vn IoT Uno
+          esp32doit-devkit-esp32:esp32:v1                     # DOIT ESP32 DEVKIT V1
+          esp32doit-esp32:esp32:espduino                      # DOIT ESPduino32
+          esp32-esp32:esp32:evb                               # OLIMEX ESP32-EVB
+          esp32-esp32:esp32:gateway                           # OLIMEX ESP32-GATEWAY
+          esp32-esp32:esp32:poe                               # OLIMEX ESP32-PoE
+          esp32-poe-esp32:esp32:iso                           # OLIMEX ESP32-PoE-ISO
+          esp32-esp32:esp32:DevKitLipo                        # OLIMEX ESP32-DevKit-LiPo
+          esp32:esp32:espino32                                # ThaiEasyElec's ESPino32
+          m5stack-core-esp32:esp32:esp32                      # M5Stack-Core-ESP32
+          m5stack-esp32:esp32:fire                            # M5Stack-FIRE
+          m5stack-esp32:esp32:station                         # M5Stack-Station
+          m5stick-esp32:esp32:c                               # M5Stick-C
+          m5stack-esp32:esp32:atom                            # M5Stack-ATOM
+          m5stack-esp32:esp32:core2                           # M5Stack-Core2
+          m5stack-timer-esp32:esp32:cam                       # M5Stack-Timer-CAM
+          m5stack-esp32:esp32:coreink                         # M5Stack-CoreInk
+          esp32:esp32:odroid_esp32                            # ODROID ESP32
+          esp32:esp32:heltec_wifi_kit_32                      # Heltec WiFi Kit 32
+          esp32:esp32:heltec_wifi_lora_32                     # Heltec WiFi LoRa 32
+          esp32:esp32:heltec_wifi_lora_32_V2                  # Heltec WiFi LoRa 32(V2)
+          esp32:esp32:heltec_wireless_stick                   # Heltec Wireless Stick
+          esp32:esp32:heltec_wireless_stick_lite              # Heltec Wireless Stick Lite
+          esp32:esp32:espectro32                              # ESPectro32
+          esp32:esp32:CoreESP32                               # Microduino-CoreESP32
+          esp32:esp32:alksesp32                               # ALKS ESP32
+          esp32:esp32:wipy3                                   # WiPy 3.0
+          wt32-esp32:esp32:eth01                              # WT32-ETH01 Ethernet Module
+          bpi-esp32:esp32:bit                                 # BPI-BIT
+          esp32:esp32:wesp32                                  # Silicognition wESP32
+          t-esp32:esp32:beam                                  # T-Beam
+          d-duino-esp32:esp32:32                              # D-duino-32
+          esp32:esp32:lopy                                    # LoPy
+          esp32:esp32:lopy4                                   # LoPy4
+          esp32:esp32:oroca_edubot                            # OROCA EduBot
+          fm-esp32:esp32:devkit                               # ESP32 FM DevKit
+          esp32:esp32:frogboard                               # Frog Board ESP32
+          esp32:esp32:esp32cam                                # AI Thinker ESP32-CAM
+          esp32:esp32:twatch                                  # TTGO T-Watch
+          esp32:esp32:d1_mini32                               # WEMOS D1 MINI ESP32
+          esp32:esp32:d1_uno32                                # WEMOS D1 R32
+          esp32:esp32:gpy                                     # Pycom GPy
+          vintlabs-devkit-esp32:esp32:v1                      # VintLabs ESP32 Devkit
+          esp32:esp32:honeylemon                              # HONEYLemon
+          mgbot-esp32:esp32:iotik32a                          # MGBOT IOTIK 32A
+          mgbot-esp32:esp32:iotik32b                          # MGBOT IOTIK 32B
+          piranha_esp-esp32:esp32:32                          # Piranha ESP-32
+          metro_esp-esp32:esp32:32                            # Metro ESP-32
+          esp32:esp32:sensesiot_weizen                        # Senses's WEIZEN
+          kits-esp32:esp32:edu                                # KITS ESP32 EDU
+          esp32:esp32:mPython                                 # Labplus mPython
+          esp32:esp32:OpenKB                                  # INEX OpenKB
+          esp32:esp32:wifiduino32                             # WiFiduino32
+          esp32:esp32:wifiduino32c3                           # WiFiduinoV2
+          esp32:esp32:wifiduino32s3                           # WiFiduino32S3
+          imbrios-logsens-esp32:esp32:v1p1                    # IMBRIOS LOGSENS_V1P1
+          esp32:esp32:healthypi4                              # ProtoCentral HealthyPi 4
+          ET-esp32:esp32:Board                                # ET-Board
+          esp32:esp32:ch_denky                                # Denky
+          esp32:esp32:uPesy_wrover                            # uPesy ESP32 Wrover DevKit
+          esp32:esp32:uPesy_wroom                             # uPesy ESP32 Wroom DevKit
+          esp32:esp32:kb32                                    # KB32-FT
+          esp32:esp32:deneyapkart                             # Deneyap Kart
+          esp32:esp32:deneyapmini                             # Deneyap Mini
+          esp32:esp32:deneyapkart1A                           # Deneyap Kart 1A
+          esp32:esp32:deneyapkartg                            # Deneyap Kart G
+          esp32-trueverit-iot-esp32:esp32:driver              # Trueverit ESP32 Universal IoT Driver
+          esp32-trueverit-iot-driver-esp32:esp32:mkii         # Trueverit ESP32 Universal IoT Driver MK II
+          esp32:esp32:atmegazero_esp32s2                      # ATMegaZero ESP32-S2
+          esp32:esp32:franzininho_wifi_esp32s2                # Franzininho WiFi
+          esp32:esp32:franzininho_wifi_msc_esp32s2            # Franzininho WiFi MSC
+          esp32:esp32:tamc_termod_s3                          # TAMC Termod S3
+          esp32:esp32:dpu_esp32                               # DPU ESP32
+          esp32:esp32:sonoff_dualr3                           # Sonoff DUALR3
+          esp32:esp32:lionbit                                 # Lion:Bit Dev Board
+          esp32:esp32:watchy                                  # Watchy
+          esp32:esp32:AirM2M_CORE_ESP32C3                     # AirM2M_CORE_ESP32C3
+          esp32:esp32:XIAO_ESP32C3                            # XIAO_ESP32C3
+          esp32:esp32:connaxio_espoir                         # Connaxio's Espoir
+          esp32:esp32:aw2eth                                  # CNRS AW2ETH
+          esp32:esp32:department_of_alchemy_minimain_esp32s2  # Deparment of Alchemy MiniMain ESP32-S2
+          esp32:esp32:Bee_Motion_S3                           # Bee Motion S3
+          esp32:esp32:Bee_Motion                              # Bee Motion
+          esp32:esp32:Bee_Motion_Mini                         # Bee Motion Mini
+          esp32:esp32:Bee_S3                                  # Bee S3
+          esp32:esp32:unphone7                                # unPhone 7
+          esp32:esp32:unphone8                                # unPhone 8
+          esp32:esp32:unphone9                                # unPhone 9
+
+          # =======================================================================================
+          # ***************************************************************************************
+          # =======================================================================================
+          # Default Arduino BSP support
+          # BSP URL --  http://drazzy.com/package_drazzy.com_index.json
+          # ATTinyCore:avr: -- https://github.com/SpenceKonde/ATTinyCore/blob/7f7cd4edee26bdfea62d7cea4933a61ee69c8d5e/avr/boards.txt
+          # =======================================================================================
+          ATTinyCore:avr:attinyx4:   # ATtiny84/44/24 (No Bootloader)
+          ATTinyCore:avr:attinyx41   # ATtiny841/441 (No Bootloader)
+          ATTinyCore:avr:attinyx5    # ATtiny85/45/25 (No Bootloader)
+          ATTinyCore:avr:attinyx61   # ATtiny861/461/261 (No Bootloader)
+          ATTinyCore:avr:attinyx7    # ATtiny167/87 (No Bootloader)
+          ATTinyCore:avr:attinyx8    # ATtiny88/48 (No Bootloader)
+          ATTinyCore:avr:attiny1634  # ATtiny1634 (No Bootloader)
+          ATTinyCore:avr:attinyx313  # ATtiny4313/2313 (No Bootloader)
+          ATTinyCore:avr:attiny828   # ATtiny828 (No Bootloader)
+          ATTinyCore:avr:attiny43u   # ATtiny43 (No Bootloader)
+          ATTinyCore:avr:attiny26    # ATtiny26 (No Bootloader)
