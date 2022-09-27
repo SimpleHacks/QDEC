@@ -1,0 +1,13 @@
+on:
+  workflow_dispatch:
+  schedule:
+    # Example was to run every 5 minutes
+    # Running every 20 minutes is "fast enough"
+    - cron:  '*/20 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: report size deltas
+        uses: arduino/report-size-deltas@v1
