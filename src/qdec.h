@@ -137,11 +137,14 @@ namespace SimpleHacks {
         struct deduceArduinoPinType<FUNC(PARAM)>
         { using type = PARAM; };
     }
-    // Deduce the type to be used to store a pin
-    // WORKAROUND: MBED OS BSPs define `pin_size_t` (huzzah!)
-    #if defined(__MBED__)
+
+    #if defined(ARDUINO_API_VERSION)
+        // Platforms using ArduinoCore-API define `pin_size_t` ... Huzzah!
         #define SIMPLEHACKS_PIN_TYPE pin_size_t
     #else
+        // Use the digitalRead() function to deduce the type of the first parameter.
+        // NOTE: This hack will fail to compile when digitalRead() has multiple overloads
+        //       with different parameter types (as ArduinoCore-API has done).
         typedef typename Internal::deduceArduinoPinType<decltype(digitalRead)>::type SIMPLEHACKS_PIN_TYPE;
     #endif
 
