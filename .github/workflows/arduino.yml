@@ -12,6 +12,7 @@ on:
 
 env:
   SKETCHES_REPORTS_PATH: reports
+  # Do not change the artifact name ... it's used in report_deltas action also...
   SKETCHES_REPORTS_ARTIFACT_NAME: sketches-reports
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -22,10 +23,15 @@ jobs:
       fail-fast: false
       matrix:
         fqbn:
+
+          # MegaCoreX is an Arduino-compatible alternative that some prefer for MegaAVR boards
+          - MegaCoreX:megaavr:4809:pinout=48pin_standard,eeprom=erase,resetpin=reset,BOD=disabled,clock=internal_16MHz,bootloader=no_bootloader
+
           # # ATTinyCore BSP v2.x ...
           # # - ATTinyCore:avr:attinyx5:chip=85,clock=internal_8m,eesave=disable,softserial=txonly,bod=disable,millis=enabled
 
           # ATTinyCore BSP v1.x ...
+          # Amazing!  Arduino-compatible support for ATTiny chips!
           - ATTinyCore:avr:attinyx5:chip=85,LTO=enable,clock=8internal,eesave=disable,bod=disable,millis=enabled
 
           # Arduino AVR Boards
@@ -104,6 +110,8 @@ jobs:
               name: esp32:esp32
             - source-url: http://drazzy.com/package_drazzy.com_index.json
               name: ATTinyCore:avr
+            - source-url: https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json
+              name: MegaCoreX:megaavr
 
           # will automatically find sketches in subdirectories
           sketch-paths: examples
@@ -117,13 +125,3 @@ jobs:
         with:
           name: ${{ env.SKETCHES_REPORTS_ARTIFACT_NAME }}
           path: ${{ env.SKETCHES_REPORTS_PATH }}
-
-  # When using a matrix to compile multiple boards,
-  # it's necessary to use a separate job (with `needs`)
-  # to ensure the artifacts were uploaded.
-  report_job:
-    needs: compile_job
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo "Runs only after all compilation succeeds / artifacts uploaded"
