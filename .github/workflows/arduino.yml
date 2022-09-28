@@ -1,5 +1,10 @@
 name: Compile Sketches
 
+# If any permissions specified, all other permissions
+# default to 'none' (except metadata == read)
+permissions:
+  contents:             none
+
 # Controls when the workflow will run
 on:
   push:
@@ -78,11 +83,37 @@ jobs:
 
 
     steps:
+
+      - name: Harden Runner
+        uses: step-security/harden-runner@dd2c410b088af7c0dc8046f3ac9a8f4148492a95
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          disable-telemetry: true # disables telemetry sent to StepSecurity when egress policy is set to 'block'
+          allowed-endpoints: >
+            MCUdude.github.io:443
+            SpenceKonde.github.io:443
+            arduino.esp8266.com:80
+            azduino.com:443
+            azure.archive.ubuntu.com:80
+            downloads.arduino.cc:443
+            downloads.arduino.cc:80
+            drazzy.com:80
+            files.pythonhosted.org:443
+            github.com:443
+            launchpad.net:443
+            mcudude.github.io:443
+            objects.githubusercontent.com:443
+            packages.microsoft.com:443
+            pipelines.actions.githubusercontent.com:443
+            ppa.launchpad.net:80
+            pypi.org:443
+            raw.githubusercontent.com:443
+
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e
       
       - name: Compile
-        uses: arduino/compile-sketches@1edb1fde2dd10524d345c853e888f487459667aa # v1.0.1
+        uses: arduino/compile-sketches@1edb1fde2dd10524d345c853e888f487459667aa
         with:
           fqbn: ${{ matrix.fqbn }}
           platforms: |
@@ -121,7 +152,7 @@ jobs:
           enable-warnings-report: true
 
       - name: Upload sketches report as workflow artifact
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
           name: ${{ env.SKETCHES_REPORTS_ARTIFACT_NAME }}
           path: ${{ env.SKETCHES_REPORTS_PATH }}

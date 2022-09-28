@@ -1,0 +1,72 @@
+name: "Code Scanning - Action"
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  schedule:
+    #  NOTE: Date and time are in UTC (not local time)
+    #
+    #         ┌───────────── minute (0 - 59)
+    #         │  ┌───────────── hour (0 - 23)
+    #         │  │ ┌───────────── day of the month (1 - 31)
+    #         │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #         │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #         │  │ │ │ │
+    #         │  │ │ │ │
+    #         │  │ │ │ │
+    #         *  * * * *
+    - cron: '43  8 * * WED'
+
+permissions:
+  contents: read
+
+jobs:
+  CodeQL-Build:
+    # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
+    runs-on: ubuntu-latest
+
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@dd2c410b088af7c0dc8046f3ac9a8f4148492a95
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@86f3159a697a097a813ad9bfa0002412d97690a4
+        # Override language selection by uncommenting this
+        # and choosing your languages
+        # with:
+        #   languages: go, javascript, csharp, python, cpp, java
+
+      # Autobuild attempts to build any compiled languages (C/C++, C#, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below).
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@86f3159a697a097a813ad9bfa0002412d97690a4
+
+      # Command-line programs to run using the OS shell.
+      # See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+
+      # If the Autobuild fails above, remove it and uncomment the following
+      # three lines and modify them (or add more) to build your code if your
+      # project uses a compiled language
+
+      #- run: |
+      #     make bootstrap
+      #     make release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@86f3159a697a097a813ad9bfa0002412d97690a4
