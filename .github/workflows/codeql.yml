@@ -1,6 +1,7 @@
 name: "Code Scanning - Action"
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, dev]
   pull_request:
@@ -64,9 +65,13 @@ jobs:
       # three lines and modify them (or add more) to build your code if your
       # project uses a compiled language
 
-      #- run: |
-      #     make bootstrap
-      #     make release
+      - name: Compile for ESP32
+        uses: arduino/compile-sketches@1edb1fde2dd10524d345c853e888f487459667aa
+        with:
+          fqbn: esp32:esp32:esp32 # ESP32 Dev Module
+          platforms: |
+            - source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+              name: esp32:esp32
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@86f3159a697a097a813ad9bfa0002412d97690a4
