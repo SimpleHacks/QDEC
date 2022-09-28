@@ -11,7 +11,7 @@ on:
 permissions: read-all
 
 jobs:
-  analysis:https://github.com/SimpleHacks/QDEC
+  analysis:
     name: Scorecards analysis
     runs-on: ubuntu-latest
     permissions:
