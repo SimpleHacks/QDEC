@@ -182,10 +182,10 @@ namespace SimpleHacks {
             _isStarted = false;
             _CurrentState = Internal::QDECODER_STATE_START;
         }
-        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getPinA() const {
+        SIMPLEHACKS_INLINE_ATTRIBUTE SIMPLEHACKS_PIN_TYPE getPinA() const {
             return _pinA;
         }
-        SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getPinB() const {
+        SIMPLEHACKS_INLINE_ATTRIBUTE SIMPLEHACKS_PIN_TYPE getPinB() const {
             return _pinB;
         }
         SIMPLEHACKS_INLINE_ATTRIBUTE uint16_t getUseFullStep() const {
@@ -195,13 +195,13 @@ namespace SimpleHacks {
             return _isStarted;
         }
         // Can only set options if QDEC is stopped (or never started)
-        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinA(uint16_t pin) {
+        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinA(SIMPLEHACKS_PIN_TYPE pin) {
             if (_isStarted) return false;
             _pinA = pin;
             return true;
         }
         // Can only set options if QDEC is stopped (or never started)
-        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinB(uint16_t pin) {
+        SIMPLEHACKS_INLINE_ATTRIBUTE bool setPinB(SIMPLEHACKS_PIN_TYPE pin) {
             if (_isStarted) return false;
             _pinB = pin;
             return true;
