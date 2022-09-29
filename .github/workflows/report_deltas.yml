@@ -7,9 +7,17 @@ on:
     # Running every 20 minutes is "fast enough"
     - cron:  '*/20 * * * *'
 
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@dd2c410b088af7c0dc8046f3ac9a8f4148492a95
