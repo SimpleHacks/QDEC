@@ -1,0 +1,84 @@
+
+; WARNING -- this is **NOT** verified to even compile at this point!
+
+.program qdecpio
+
+init:                          ; SM_RESTART does not clear X or Y
+   set X, 0                    ; 0 : set initial value for X
+   set Y, 0                    ; 1 : set initial value for Y
+    
+.wrap_target:                  ; wrap to here ... save one JMP instruction
+
+p1__wait_falling:              ; label = 2
+    wait 0 pin 0               ;  2 : wait for falling edge
+    jmp pin, p1__falling_high  ;  3 : branch based on other signal
+p1__falling_low:               ;  label = 4
+    jmp (x--) p1__wait_rising  ;  4 : X-- / clockwise
+    jmp p1__wait_rising        ;  5 : edge case: pre-decrement, x was zero
+p1__falling_high:              ;  label = 6
+    jmp (y--) p1__wait_rising  ;  6 : Y-- / anti-clockwise
+
+p1__wait_rising:               ;  label = 7
+    wait 1 pin 0               ;  7 : wait for rising edge
+    jmp pin, p1__rising_high   ;  8 : branch based on other signal
+p1__rising_low:                ;  label = 9
+    jmp (y--) p1__wait_falling ;  9 : Y-- / anti-clockwise
+    jmp p1_wait_falling        ; 10 : edge case: pre-decrement, y was zero
+p1__rising_high:               ;  label = 11
+    jmp (x--) p1__wait_falling ; 11 : X-- / clockwise
+.wrap
+
+
+% c-sdk {
+static inline void qdecpio_program_init(PIO pio, int smIdx, uint offset, uint pin_a, uint pin_b) {
+    pio_sm_config config = qdecpio_program_get_default_config(offset);
+    sm_config_set_in_pins(&config, pin_a); // sm will wait on edges on this pin's signal
+    sm_config_set_jmp_pin(&config, pin_b); // sm will conditionally jump based on this pin's signal
+    // static const bool shift_direction_right = false;
+    // static const bool enable_autopush       = true;
+    // static const uint8_t autopush_threshold = 32;
+    sm_config_set_in_shift(&config, false, true, 32);
+    pio_sm_init(pio, smIdx, offset, &config);
+    pio_sm_set_enabled(pio, smIdx, true);
+}
+typedef struct allocated_pio_sm_program { // Valid only if Pio is valid pointer (!= nullptr)
+    PIO Pio;                // will be nullptr on failure
+    uint ProgramOffset;
+    int StateMachineIdx;
+};
+static const allocated_pio_sm_program invalid_pio_sm_program_allocation = {
+    .Pio = nullptr,
+    .ProgramOffset = (uint)-1,
+    .StateMachineIdx = -1,
+};
+static inline struct allocated_pio_sm_program qdecpio_try_to_allocate_specific_pio(PIO pio) {
+    if (!pio_can_add_program(pio, &qdecpio_program)) {
+        return invalid_pio_sm_program_allocation;
+    }
+    int smIdx = pio_claim_unused_sm(pio, false); // false == return -1 on failure (not panic)
+    if (smIdx == -1) {
+        return invalid_pio_sm_program_allocation;
+    }
+    // No more failures paths from here onwards
+    uint offset = pio_add_program(pio, &qdecpio_program); // panics on failure
+    allocated_pio_sm_program x = {
+        .Pio = pio,
+        .ProgramOffset = offset,
+        .StateMachineIdx = smIdx,
+    };
+    return x;
+}
+// user code can call this to initialize on any available PIO / state machine
+// succeed indicated by non-null Pio member, and provides all state information
+static inline struct allocated_pio_sm_program qdecpio_try_to_initialize(uint pin_a, uint pin_b) {
+    allocated_pio_sm_program x = qdecpio_try_to_allocate_specific_pio(pio0);
+    if (x.pio == nullptr) {
+        x = qdecpio_try_to_allocate_specific_pio(pio1);
+    }
+    if (x.pio != nullptr) {
+        qdecpio_program_init(x.Pio, x.StateMachineIdx, x.ProgramOffset, pin_a, pin_b);
+    }
+    return x;
+}
+
+%}
