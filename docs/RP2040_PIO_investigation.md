@@ -286,6 +286,7 @@ following pseudocode:
 
 ## Non-validated PIO assembly
 
+```asm
 .program qdec_pio
 
 init:                          ; SM_RESTART does not clear X or Y
@@ -312,6 +313,7 @@ p1__rising_low:                ;  label = 9
 p1__rising_high:               ;  label = 11
     jmp (x--) p1__wait_falling ; 11 : X-- / clockwise
 .wrap
+```
 
 ## Same code as 16-bit machine code (pre-deployment ... address offset == 0)
 
