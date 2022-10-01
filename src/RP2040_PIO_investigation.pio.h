@@ -41,11 +41,11 @@ static inline void qdecpio_program_init(PIO pio, int smIdx, uint offset, uint pi
     pio_sm_set_enabled(pio, smIdx, true);
 }
 
-typedef struct allocated_pio_sm_program { // Valid only if Pio is valid pointer (!= nullptr)
+typedef struct { // Valid only if Pio is valid pointer (!= nullptr)
     PIO Pio;                // will be nullptr on failure
     uint ProgramOffset;
     int StateMachineIdx;
-};
+} allocated_pio_sm_program;
 static const allocated_pio_sm_program invalid_pio_sm_program_allocation = {
     .Pio = nullptr,
     .ProgramOffset = (uint)-1,
@@ -71,10 +71,10 @@ static inline allocated_pio_sm_program qdecpio_try_to_allocate_specific_pio(PIO 
 // user code can call this to initialize on any available PIO / state machine
 static inline allocated_pio_sm_program qdecpio_try_to_initialize(uint pin_a, uint pin_b) {
     allocated_pio_sm_program x = qdecpio_try_to_allocate_specific_pio(pio0);
-    if (x.pio == nullptr) {
+    if (x.Pio == nullptr) {
         x = qdecpio_try_to_allocate_specific_pio(pio1);
     }
-    if (x.pio != nullptr) {
+    if (x.Pio != nullptr) {
         qdecpio_program_init(x.Pio, x.StateMachineIdx, x.ProgramOffset, pin_a, pin_b);
     }
     return x;
