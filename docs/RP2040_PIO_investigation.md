@@ -28,12 +28,17 @@ Some of the relevant limitations of PIO and its instructions set:
     * PIO SM could stall forever waiting on the IRQ
 * Can only wait on, set, or clear a **single** IRQ
     * thus, cannot wait on multiple IRQ at once
+* A single DMA channel cannot be setup to perpetually transfer
+  data to a circular buffer.  Therefore, it will always take at
+  least one additional DMA channel if setting up a perpetual
+  transfer of data.
 * Cannot directly connect two state machine FIFO queues together
     * thus, cannot cheat by having one state machine feed
       data directly into a second state machine
-    * rather, one could connecting a DMA channel to read from
-      one FIFO and push to the other, but then the overhead increases
-      to two PIO **AND** a DMA channel ... which is not preferred.
+    * one could connect a DMA channel to read from one FIFO and
+      push to the other, but then the overhead increases to two
+      PIO **AND** two DMA channels (for perpetual transfer) ...
+      which is not preferred.
 * Currently no explicit decrement instruction
     * `JMP (X--) LABEL_FOR_NEXT_INSTRUCTION` is, essentially, `DEC x`
     * To realize this, folks have to stumble upon, and understand,
@@ -52,6 +57,8 @@ Some of the relevant limitations of PIO and its instructions set:
           MOV X, ~X                           ; value stable at post-increment
       ```
 * `JMP PIN <LABEL>` can only use a **single, preconfigured** GPIO
+    * Thus, only one external pin can be used to cause a conditional jump
+      within the state machine.
 * No `XOR` instruction
     * conditional jump on !X (when x == 0)
     * conditional jump on !Y (when y == 0)
@@ -59,7 +66,7 @@ Some of the relevant limitations of PIO and its instructions set:
     * conditional jump (with decrement side-effect) of Y (when y != 0)
     * MOV allows bitwise negation
     * MOV allows bit-reversal
-    * SET can create values 0..31
+    * SET can create values 0..31 only
     * Thus ... non-trivial to XOR
 * If the program uses `MOV EXEC` or `OUT EXEC`, then the CPU
   cannot write to the `SMx_INSTR` register, because they use
@@ -270,17 +277,18 @@ registers are atomic.  On the CPU side, rather
 than writing a single `IN X, 32` to `SMx_INSTR`,
 it writes two instructions:
 ```pio
-    IN Y, 32
-    IN X, 32
+    IN Y, 16
+    IN X, 16
 ```
 
-This pushes two 32-bit values into the FIFO.
-The CPU then reads the values, expressing the
-following pseudocode:
+This pushes two 16-bit values into the FIFO.
+The CPU then reads the value as a single 32-bit
+value, expressing the following pseudocode:
 ```c++
-    int32_t regY = read_rx_fifo(...);
-    int32_t regX = read_rx_fifo(...);
-    int32_t result = Y - X;
+    int32_t registers = read_rx_fifo(...);
+    int16_t regX = (int16_t)((registers & 0xFFFF0000) >> 16u);
+    int32_t regY = (int16_t)((registers & 0x0000FFFF) >>  0u);
+    int16_t result = regY - regX;
     return result;
 ```
 
@@ -367,16 +375,11 @@ static inline void qdecpio_program_init(PIO pio, int smIdx, uint offset, uint pi
     pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_set(pio_y, 0));
     pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_set(pio_x, 0));
 
-    // optionally, read the second pin to determine which start address to use
-    if (read_digital(pin_b) == HIGH) {
-       uint alt_start = qdecpio_alt_start_offset + offset;
-       pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_jmp(alt_start));
-    }
     pio_sm_set_enabled(pio, smIdx, true);
 }
 
 typedef struct { // Valid only if Pio is valid pointer (!= nullptr)
-    PIO Pio;                // will be nullptr on failure
+    PIO Pio; // will be nullptr on failure
     uint ProgramOffset;
     int StateMachineIdx;
 } allocated_pio_sm_program;
