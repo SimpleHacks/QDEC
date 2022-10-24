@@ -7,13 +7,23 @@ permissions:
 
 # Controls when the workflow will run
 on:
+  # Triggers the workflow on push requests
   push:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  #   branches: [ "main", "workflow2" ]
+    # but exclude dependabot branches (will be done in pull request)
+    branches:
+      - '**'
+      - '!dependabot/**'
+
+  # Trigger the workflow on pull requests
   pull_request:
-  #   branches: [ "main", "workflow2" ]
+    # but exclude PRs that target a dependabot branch
+    branches:
+      - '**'
+      - '!dependabot/**'
+
   # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
+
 
 env:
   SKETCHES_REPORTS_PATH: reports
