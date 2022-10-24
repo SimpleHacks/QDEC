@@ -269,7 +269,7 @@ As a result, all operations on the `X` and `Y`
 registers are atomic.  On the CPU side, rather
 than writing a single `IN X, 32` to `SMx_INSTR`,
 it writes two instructions:
-```asm
+```pio
     IN Y, 32
     IN X, 32
 ```
@@ -277,41 +277,47 @@ it writes two instructions:
 This pushes two 32-bit values into the FIFO.
 The CPU then reads the values, expressing the
 following pseudocode:
-```
+```c++
     int32_t regY = read_rx_fifo(...);
     int32_t regX = read_rx_fifo(...);
     int32_t result = Y - X;
     return result;
 ```
 
+Interestingly, it's entirely irrelevant what the
+values of the `X` and `Y` registers is when the
+state machine starts.  This saves two instructions
+that otherwise would be used initializing those
+registers to zero.  (Another alternative is for
+the registers to be set to zero prior to starting
+execution by writing to the `SMx_INSTR` register.)
+
+
 ## Non-validated PIO assembly
 
-```asm
+```pio
 .program qdec_pio
 
-init:                          ; SM_RESTART does not clear X or Y
-   set X, 0                    ; 0 : set initial value for X
-   set Y, 0                    ; 1 : set initial value for Y
-    
 .wrap_target:                  ; wrap to here ... save one JMP instruction
 
-p1__wait_falling:              ; label = 2
-    wait 0 pin 0               ;  2 : wait for falling edge
-    jmp pin, p1__falling_high  ;  3 : branch based on other signal
-p1__falling_low:               ;  label = 4
-    jmp (x--) p1__wait_rising  ;  4 : X-- / clockwise
-    jmp p1__wait_rising        ;  5 : edge case: pre-decrement, x was zero
-p1__falling_high:              ;  label = 6
-    jmp (y--) p1__wait_rising  ;  6 : Y-- / anti-clockwise
+p1__wait_falling:              ; label = 0
+    wait 0 pin 0               ;  0 : wait for falling edge
+    jmp pin, p1__falling_high  ;  1 : branch based on other signal
+p1__falling_low:               ;  label = 2
+    jmp (x--) p1__wait_rising  ;  2 : X-- / clockwise
+    jmp p1__wait_rising        ;  3 : edge case: pre-decrement, x was zero
+p1__falling_high:              ;  label = 4
+    jmp (y--) p1__wait_rising  ;  4 : Y-- / anti-clockwise
 
-p1__wait_rising:               ;  label = 7
-    wait 1 pin 0               ;  7 : wait for rising edge
-    jmp pin, p1__rising_high   ;  8 : branch based on other signal
-p1__rising_low:                ;  label = 9
-    jmp (y--) p1__wait_falling ;  9 : Y-- / anti-clockwise
-    jmp p1_wait_falling        ; 10 : edge case: pre-decrement, y was zero
-p1__rising_high:               ;  label = 11
-    jmp (x--) p1__wait_falling ; 11 : X-- / clockwise
+p1__wait_rising:               ;  label = 5
+    wait 1 pin 0               ;  5 : wait for rising edge
+    jmp pin, p1__rising_high   ;  6 : branch based on other signal
+p1__rising_low:                ;  label = 7
+    jmp (y--) p1__wait_falling ;  7 : Y-- / anti-clockwise
+    jmp p1_wait_falling        ;  8 : edge case: pre-decrement, y was zero
+p1__rising_high:               ;  label = 9
+    jmp (x--) p1__wait_falling ;  9 : X-- / clockwise
+
 .wrap
 ```
 
@@ -322,20 +328,92 @@ p1__rising_high:               ;  label = 11
 #include "hardware/pio.h"
 #endif
 
-static const uint8_t  qdecpio_wrap_target = 2;
-static const uint8_t  qdecpio_wrap = 11; // when this instruction executes, it auto-wraps
+static const uint8_t  qdecpio_wrap_target = 0;
+
+// option: read the state of first pin.
+//         if the pin is high, start execution normally
+//         if the pin is low, start at alt offset
+static const uint8_t  qdecpio_alt_start_offset = 5;
+static const uint8_t  qdecpio_wrap = 9; // when this instruction executes, it auto-wraps
 static const uint16_t qdecpio_program_instructions[] = {
-    0xE020, // 0b_111_00000_001_00000,  //  0: set X, 0
-    0xE040, // 0b_111_00000_010_00000,  //  1: set Y, 0
-    0x2020, // 0b_001_00000_0_01_00000, //  2: wait 0, pin 0
-    0x00C6, // 0b_000_00000_110_00110,  //  3: jmp pin, 6
-    0x0047, // 0b_000_00000_010_00111,  //  4: jmp (x--), 7
-    0x0007, // 0b_000_00000_000_00111,  //  5: jmp 7
-    0x0087, // 0b_000_00000_100_00111,  //  6: jmp (y--), 7
-    0x20A0, // 0b_001_00000_1_01_00000, //  7: wait 1, pin 0
-    0x00CB, // 0b_000_00000_110_01011,  //  8: jmp pin, 11
-    0x0082, // 0b_000_00000_100_00010,  //  9: jmp (y--), 2
-    0x0002, // 0b_000_00000_000_00010,  // 10: jmp 2
-    0x0042, // 0b_000_00000_010_00010,  // 11: jmp (x--), 2
+    0x2020, // 0b_001_00000_0_01_00000, //  0: wait 0, pin 0
+    0x00C4, // 0b_000_00000_110_00100,  //  1: jmp pin, 4
+    0x0045, // 0b_000_00000_010_00101,  //  2: jmp (x--), 5
+    0x0005, // 0b_000_00000_000_00101,  //  3: jmp 5
+    0x0085, // 0b_000_00000_100_00101,  //  4: jmp (y--), 5
+
+    0x20A0, // 0b_001_00000_1_01_00000, //  5: wait 1, pin 0
+    0x00C9, // 0b_000_00000_110_01001,  //  6: jmp pin, 9
+    0x0080, // 0b_000_00000_100_00000,  //  7: jmp (y--), 0
+    0x0000, // 0b_000_00000_000_00000,  //  8: jmp 0
+    0x0040, // 0b_000_00000_010_00000,  //  9: jmp (x--), 0
 };
+
+static inline void qdecpio_program_init(PIO pio, int smIdx, uint offset, uint pin_a, uint pin_b) {
+    pio_sm_config config = qdecpio_program_get_default_config(offset);
+    sm_config_set_in_pins(&config, pin_a); // sm will wait on edges on this pin's signal
+    sm_config_set_jmp_pin(&config, pin_b); // sm will conditionally jump based on this pin's signal
+
+    //static const bool shift_direction_right = false;
+    //static const bool enable_autopush = true;
+    //static const uint8_t autopush_threshold = 32;
+    sm_config_set_in_shift(&config, false, true, 32);
+
+    pio_sm_init(pio, smIdx, offset, &config);
+
+    // static init here ... saves 2 instructions
+    // NOTE: technically, this is not required, as caller must cache old values
+    //       to detect offsets (movement).  It just makes conceptually easier to debug
+    pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_set(pio_y, 0));
+    pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_set(pio_x, 0));
+
+    // optionally, read the second pin to determine which start address to use
+    if (read_digital(pin_b) == HIGH) {
+       uint alt_start = qdecpio_alt_start_offset + offset;
+       pio_sm_exec_wait_blocking(pio, smIdx, pio_encode_jmp(alt_start));
+    }
+    pio_sm_set_enabled(pio, smIdx, true);
+}
+
+typedef struct { // Valid only if Pio is valid pointer (!= nullptr)
+    PIO Pio;                // will be nullptr on failure
+    uint ProgramOffset;
+    int StateMachineIdx;
+} allocated_pio_sm_program;
+static const allocated_pio_sm_program invalid_pio_sm_program_allocation = {
+    .Pio = nullptr,
+    .ProgramOffset = (uint)-1,
+    .StateMachineIdx = -1,
+};
+static inline allocated_pio_sm_program qdecpio_try_to_allocate_specific_pio(PIO pio) {
+    if (!pio_can_add_program(pio, &qdecpio_program)) {
+        return invalid_pio_sm_program_allocation;
+    }
+    int smIdx = pio_claim_unused_sm(pio, false); // false == return -1 on failure (not panic)
+    if (smIdx == -1) {
+        return invalid_pio_sm_program_allocation;
+    }
+    // No more failures paths from here onwards
+    uint offset = pio_add_program(pio, &qdecpio_program); // panics on failure
+    allocated_pio_sm_program x = {
+        .Pio = pio,
+        .ProgramOffset = offset,
+        .StateMachineIdx = smIdx,
+    };
+    return x;
+}
+// user code can call this to initialize on any available PIO / state machine
+static inline allocated_pio_sm_program qdecpio_try_to_initialize(uint pin_a, uint pin_b) {
+    allocated_pio_sm_program x = qdecpio_try_to_allocate_specific_pio(pio0);
+    if (x.Pio == nullptr) {
+        x = qdecpio_try_to_allocate_specific_pio(pio1);
+    }
+    if (x.Pio != nullptr) {
+        qdecpio_program_init(x.Pio, x.StateMachineIdx, x.ProgramOffset, pin_a, pin_b);
+    }
+    return x;
+}
+
+
+
 ```
