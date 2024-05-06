@@ -50,57 +50,23 @@
 // See the examples for more options...
 
 
-// User-configurable:
-//
-// NOTE: Rarely needed.
-//
-// By default, on very old Arduino versions, this library
-// will enable the built-in pull-up resistors via a call
-// to `digitalWrite(_pin, HIGH)`.
-//
-// Defining this provides a way to prevent this, such as
-// if wanting to use external pullup resistors with those
-// very old Arduino versions.
-//
-// Note that defining SIMPLEHACKS_QDECODER_PIN_MODE implies
-// SIMPLEHACK_QDECODER_NO_WRITE_TO_PIN is also defined.
-#if defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
-    // user configured to disable write to pin
-#elif defined(SIMPLEHACKS_QDECODER_PIN_MODE)
-    // If _PIN_MODE is explicitly defined, then default
-    // is to NOT write to the pin.
-    #define SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN
-#elif defined(ARDUINO) && (ARDUINO >= 101) && defined(INPUT_PULLUP)
-    // If using any recent arduino version, then default
-    // is to NOT write to the pin
-    #define SIMPLE_HACKS_QDECODER_NO_WRITE_TO_PIN
-#else
-    // Thus, the ONLY time this is NOT defined is when:
-    // 1. User has NOT explicitly defined ..._PIN_MODE
-    //    --AND--
-    // 2. User is using an ancient version of ARDUINO
-    //    --AND--
-    // 3. User has NOT explicitly defined ..._NO_WRITE_TO_PIN
-    //
-    // Then (and only then) will the legacy method of
-    // enabling the pull-up resistors by writing to the
-    // input pin occur.
-#endif
-
-// User-configurable:
+// User-configurable: SIMPLEHACKS_QDECODER_PIN_MODE
 //
 // By default, this library sets the pins to use internal
-// pull-up resistors.  Where a controller does not support
-// internal pull-up resistors on a pin, or in the unusual
-// case of wanting to use INPUT_PULLDOWN, this allows
-// doing so.
-//
-// Note: Defining this implies ...NO_WRITE_TO_PIN.
+// pull-up resistors.  Should a project prefer to only use
+// external resistors, and/or a different pin mode
+// (such as INPUT_PULLDOWN, or just INPUT), this can be
+// defined accordingly.
+#if defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+    #error "Not user configurable: SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN"
+#endif
 #if defined(SIMPLEHACKS_QDECODER_PIN_MODE)
     // Allow user configuration to override default
+    #define SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN
 #elif defined(ARDUINO) && (ARDUINO >= 101) && defined(INPUT_PULLUP)
     // Default: non-ancient Arduino environment
     #define SIMPLEHACKS_QDECODER_PIN_MODE INPUT_PULLUP
+    #define SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN
 #else
     // Ancient arduino environment split pin mode
     // from whether pull-up resistor 
