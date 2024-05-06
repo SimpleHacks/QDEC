@@ -123,7 +123,7 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       
       - name: Compile
-        uses: arduino/compile-sketches@1edb1fde2dd10524d345c853e888f487459667aa
+        uses: arduino/compile-sketches@8fd840319c8c9b8617a42cc731092a3350599f35
         with:
           fqbn: ${{ matrix.fqbn }}
           platforms: |
