@@ -49,6 +49,64 @@
 //
 // See the examples for more options...
 
+
+// User-configurable:
+//
+// NOTE: Rarely needed.
+//
+// By default, on very old Arduino versions, this library
+// will enable the built-in pull-up resistors via a call
+// to `digitalWrite(_pin, HIGH)`.
+//
+// Defining this provides a way to prevent this, such as
+// if wanting to use external pullup resistors with those
+// very old Arduino versions.
+//
+// Note that defining SIMPLEHACKS_QDECODER_PIN_MODE implies
+// SIMPLEHACK_QDECODER_NO_WRITE_TO_PIN is also defined.
+#if defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+    // user configured to disable write to pin
+#elif defined(SIMPLEHACKS_QDECODER_PIN_MODE)
+    // If _PIN_MODE is explicitly defined, then default
+    // is to NOT write to the pin.
+    #define SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN
+#elif defined(ARDUINO) && (ARDUINO >= 101) && defined(INPUT_PULLUP)
+    // If using any recent arduino version, then default
+    // is to NOT write to the pin
+    #define SIMPLE_HACKS_QDECODER_NO_WRITE_TO_PIN
+#else
+    // Thus, the ONLY time this is NOT defined is when:
+    // 1. User has NOT explicitly defined ..._PIN_MODE
+    //    --AND--
+    // 2. User is using an ancient version of ARDUINO
+    //    --AND--
+    // 3. User has NOT explicitly defined ..._NO_WRITE_TO_PIN
+    //
+    // Then (and only then) will the legacy method of
+    // enabling the pull-up resistors by writing to the
+    // input pin occur.
+#endif
+
+// User-configurable:
+//
+// By default, this library sets the pins to use internal
+// pull-up resistors.  Where a controller does not support
+// internal pull-up resistors on a pin, or in the unusual
+// case of wanting to use INPUT_PULLDOWN, this allows
+// doing so.
+//
+// Note: Defining this implies ...NO_WRITE_TO_PIN.
+#if defined(SIMPLEHACKS_QDECODER_PIN_MODE)
+    // Allow user configuration to override default
+#elif defined(ARDUINO) && (ARDUINO >= 101) && defined(INPUT_PULLUP)
+    // Default: non-ancient Arduino environment
+    #define SIMPLEHACKS_QDECODER_PIN_MODE INPUT_PULLUP
+#else
+    // Ancient arduino environment split pin mode
+    // from whether pull-up resistor 
+    #define SIMPLEHACKS_QDECODER_PIN_MODE INPUT
+#endif
+
 namespace SimpleHacks {
 
     typedef enum : uint8_t {
@@ -169,11 +227,15 @@ namespace SimpleHacks {
             if (_isStarted)                    return; // only call begin() once
             if (_pinA == QDECODER_INVALID_PIN) return;
             if (_pinB == QDECODER_INVALID_PIN) return;
+            pinMode(_pinA, SIMPLEHACKS_QDECODER_PIN_MODE);
+#if !defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+            digitalWrite(_pinA, HIGH); // turn on pullup resistor (very old Arduino versions require this)
+#endif
+            pinMode(_pinB, SIMPLEHACKS_QDECODER_PIN_MODE);
+#if !defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+            digitalWrite(_pinB, HIGH); // turn on pullup resistor (very old Arduino versions require this)
+#endif
 
-            pinMode(_pinA, INPUT_PULLUP);
-            digitalWrite(_pinA, HIGH); // turn on pullup resistor
-            pinMode(_pinB, INPUT_PULLUP);
-            digitalWrite(_pinB, HIGH); // turn on pullup resistor
             _CurrentState = Internal::QDECODER_STATE_START;
             _isStarted = true;
         };
@@ -319,10 +381,15 @@ namespace SimpleHacks {
     public: // public API
         // Initialization -- sets pins to correct input state
         SIMPLEHACKS_INLINE_ATTRIBUTE static void begin() {
-            pinMode(_ARDUINO_PIN_A, INPUT);
-            digitalWrite(_ARDUINO_PIN_A, HIGH); // turn on pullup resistor
-            pinMode(_ARDUINO_PIN_B, INPUT_PULLUP);
-            digitalWrite(_ARDUINO_PIN_B, HIGH); // turn on pullup resistor
+
+            pinMode(_ARDUINO_PIN_A, SIMPLEHACKS_QDECODER_PIN_MODE);
+#if !defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+            digitalWrite(_ARDUINO_PIN_A, HIGH); // turn on pullup resistor (very old Arduino versions require this)
+#endif
+            pinMode(_ARDUINO_PIN_B, SIMPLEHACKS_QDECODER_PIN_MODE);
+#if !defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
+            digitalWrite(_ARDUINO_PIN_B, HIGH); // turn on pullup resistor (very old Arduino versions require this)
+#endif
         }
 
         // update() reads the pins, changes state appropriately, and returns a
