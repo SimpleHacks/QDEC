@@ -25,4 +25,4 @@ jobs:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: report size deltas
-        uses: arduino/report-size-deltas@a4d949978b5bb0c2c3fe6147b345d5bb8fa3f4fe
+        uses: arduino/report-size-deltas@b4d8c019d98afa6a01cdb93fd7798d4b882c5277
