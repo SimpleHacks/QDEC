@@ -29,34 +29,45 @@
 #include <Arduino.h>
 #include <stdint.h>
 
+
+/*  Simpler namespace use
+    This library uses a namespace (e.g., SimpleHacks::QDecoder instead of just QDecoder).
+    However, it's very easy to make this effectively disappear!
+    As an example, at the start of a function (or right after all headers included)
+    simply add the following lines:
+        using SimpleHacks::QDECODER_EVENT;
+        using SimpleHacks::QDecoder;
+        using SimpleHacks::QDECODER_EVENT;
+    Or, if you want all the types to be avabile, you could instead add the line:
+        using namespace SimpleHacks;
+        See the examples for more options...
+    */
+
+/*  User-configurable: SIMPLEHACKS_QDECODER_NEVER_INLINE
+    Default: not defined
+
+    By default, attributes are used to strongly hint that the functions
+    should be inlined.  If this symbol is defined, then the hint will
+    instead be that the functions should NOT be inlined (which may be
+    easier to debug in some cases).
+    */
 #if defined(SIMPLEHACKS_QDECODER_NEVER_INLINE)
     // yes, the __noinline__ attribute still uses inline, so that even non-template
     // functions can be defined in the header file.
     #define SIMPLEHACKS_INLINE_ATTRIBUTE __attribute__((noinline)) inline
 #else     
     #define SIMPLEHACKS_INLINE_ATTRIBUTE __attribute__((always_inline)) inline
-#endif    
+#endif
 
-// This library uses a namespace (e.g., SimpleHacks::QDecoder instead of just QDecoder).
-// However, it's very easy to make this effectively disappear!
-// As an example, at the start of a function (or right after all headers included)
-// simply add the following lines:
-//     using SimpleHacks::QDECODER_EVENT;
-//     using SimpleHacks::QDecoder;
-//     using SimpleHacks::QDECODER_EVENT;
-// Or, if you want all the types to be avabile, you could instead add the line:
-//     using namespace SimpleHacks;
-//
-// See the examples for more options...
-
-
-// User-configurable: SIMPLEHACKS_QDECODER_PIN_MODE
-//
-// By default, this library sets the pins to use internal
-// pull-up resistors.  Should a project prefer to only use
-// external resistors, and/or a different pin mode
-// (such as INPUT_PULLDOWN, or just INPUT), this can be
-// defined accordingly.
+/*  User-configurable: SIMPLEHACKS_QDECODER_PIN_MODE
+    Default: INPUT_PULLDOWN
+    
+    By default, this library sets the pins to use internal
+    pull-up resistors.  Should a project prefer to only use
+    external resistors, and/or a different pin mode
+    (such as INPUT_PULLDOWN, or just INPUT), this can be
+    defined accordingly.
+    */
 #if defined(SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN)
     #error "Not user configurable: SIMPLEHACKS_QDECODER_NO_WRITE_TO_PIN"
 #endif
