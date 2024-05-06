@@ -82,7 +82,7 @@ jobs:
           - arduino:mbed_nano:nano33ble          # Arduino Nano 33 BLE
           - arduino:mbed_nano:nanorp2040connect  # Arduino Nano RP2040 Connect
           - arduino:mbed_portenta:envie_m7       # Arduino Portenta H7 (M7 core)
-          - arduino:mbed_portenta:envie_m4       # Arduino Portenta H7 (M4 core)
+          # - arduino:mbed_portenta:envie_m4       # Arduino Portenta H7 (M4 core)
           - arduino:mbed_rp2040:pico             # Raspberry Pi Pico
           - arduino:mbed_nicla:nicla_sense       # Nicla Sense ME
           - arduino:mbed_nicla:nicla_vision      # Nicla Vision
