@@ -26,3 +26,6 @@ jobs:
 
       - name: report size deltas
         uses: arduino/report-size-deltas@b4d8c019d98afa6a01cdb93fd7798d4b882c5277
+        with:
+          # This Perl regular expression matches names produced by the arduino build
+          sketches-reports-source: ^sketches-reports--.+
