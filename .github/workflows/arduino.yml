@@ -12,6 +12,8 @@ on:
     # but exclude dependabot branches (will be done in pull request)
     branches:
       - '**'
+      - '!**-dev'
+      - '!dev/**'
       - '!dependabot/**'
 
   # Trigger the workflow on pull requests
@@ -19,6 +21,8 @@ on:
     # but exclude PRs that target a dependabot branch
     branches:
       - '**'
+      - '!**-dev'
+      - '!dev/**'
       - '!dependabot/**'
 
   # Allows running this workflow manually from the Actions tab
