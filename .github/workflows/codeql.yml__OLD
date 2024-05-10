@@ -1,24 +1,25 @@
 name: "Code Scanning - Action"
 
 on:
+  # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
-  push:
-    branches: [main, dev]
-  pull_request:
-    branches: [main, dev]
-  schedule:
-    #  NOTE: Date and time are in UTC (not local time)
-    #
-    #         ┌───────────── minute (0 - 59)
-    #         │  ┌───────────── hour (0 - 23)
-    #         │  │ ┌───────────── day of the month (1 - 31)
-    #         │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
-    #         │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
-    #         │  │ │ │ │
-    #         │  │ │ │ │
-    #         │  │ │ │ │
-    #         *  * * * *
-    - cron: '43  8 * * WED'
+  # push:
+  #   branches: [main, dev]
+  # pull_request:
+  #   branches: [main, dev]
+  # schedule:
+  #   #  NOTE: Date and time are in UTC (not local time)
+  #   #
+  #   #         ┌───────────── minute (0 - 59)
+  #   #         │  ┌───────────── hour (0 - 23)
+  #   #         │  │ ┌───────────── day of the month (1 - 31)
+  #   #         │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+  #   #         │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+  #   #         │  │ │ │ │
+  #   #         │  │ │ │ │
+  #   #         │  │ │ │ │
+  #   #         *  * * * *
+  #   - cron: '43  8 * * WED'
 
 permissions:
   contents: read
@@ -32,27 +33,28 @@ jobs:
       # required for all workflows
       security-events: write
 
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
+      # # only required for workflows in private repositories
+      # actions: read
+      # contents: read
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@18bf8ad2ca49c14cbb28b91346d626ccfb00c518
+        uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
       - name: Checkout repository
-        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@3ebbd71c74ef574dbc558c82f70e52732c8b44fe
+        uses: github/codeql-action/init@v3
         with:
-          languages: cpp
+          language: c-cpp
+          build-mode: manual
 
       - name: Compile for ESP32
-        uses: arduino/compile-sketches@1edb1fde2dd10524d345c853e888f487459667aa
+        uses: arduino/compile-sketches@8fd840319c8c9b8617a42cc731092a3350599f35
         with:
           fqbn: esp32:esp32:esp32 # ESP32 Dev Module
           platforms: |
@@ -60,4 +62,4 @@ jobs:
               name: esp32:esp32
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@3ebbd71c74ef574dbc558c82f70e52732c8b44fe
+        uses: github/codeql-action/analyze@v3
