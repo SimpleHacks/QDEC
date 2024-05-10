@@ -1,0 +1,65 @@
+name: "Code Scanning - Action"
+
+on:
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+  # push:
+  #   branches: [main, dev]
+  # pull_request:
+  #   branches: [main, dev]
+  # schedule:
+  #   #  NOTE: Date and time are in UTC (not local time)
+  #   #
+  #   #         ┌───────────── minute (0 - 59)
+  #   #         │  ┌───────────── hour (0 - 23)
+  #   #         │  │ ┌───────────── day of the month (1 - 31)
+  #   #         │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+  #   #         │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+  #   #         │  │ │ │ │
+  #   #         │  │ │ │ │
+  #   #         │  │ │ │ │
+  #   #         *  * * * *
+  #   - cron: '43  8 * * WED'
+
+permissions:
+  contents: read
+
+jobs:
+  CodeQL-Build:
+    # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
+    runs-on: ubuntu-latest
+
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # # only required for workflows in private repositories
+      # actions: read
+      # contents: read
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@a4aa98b93cab29d9b1101a6143fb8bce00e2eac4
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout repository
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          language: c-cpp
+          build-mode: manual
+
+      - name: Compile for ESP32
+        uses: arduino/compile-sketches@8fd840319c8c9b8617a42cc731092a3350599f35
+        with:
+          fqbn: esp32:esp32:esp32 # ESP32 Dev Module
+          platforms: |
+            - source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+              name: esp32:esp32
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
