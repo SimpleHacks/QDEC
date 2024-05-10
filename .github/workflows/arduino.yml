@@ -28,7 +28,6 @@ on:
 env:
   SKETCHES_REPORTS_PATH: reports
   # Do not change the artifact name ... it's used in report_deltas action also...
-  SKETCHES_REPORTS_ARTIFACT_NAME: sketches-reports
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,59 +36,83 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fqbn:
-
+        board:
           # MegaCoreX is an Arduino-compatible alternative that some prefer for MegaAVR boards
-          - MegaCoreX:megaavr:4809:pinout=48pin_standard,eeprom=erase,resetpin=reset,BOD=disabled,clock=internal_16MHz,bootloader=no_bootloader
+          - fqbn: MegaCoreX:megaavr:4809:pinout=48pin_standard,eeprom=erase,resetpin=reset,BOD=disabled,clock=internal_16MHz,bootloader=no_bootloader
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: MegaCoreX_megaavr_4809
 
           # # ATTinyCore BSP v2.x ...
           # # - ATTinyCore:avr:attinyx5:chip=85,clock=internal_8m,eesave=disable,softserial=txonly,bod=disable,millis=enabled
+          # #   ARTIFACT_SUFFIX: ATTinyCore_BSP_v2
 
           # ATTinyCore BSP v1.x ...
           # Amazing!  Arduino-compatible support for ATTiny chips!
-          - ATTinyCore:avr:attinyx5:chip=85,LTO=enable,clock=8internal,eesave=disable,bod=disable,millis=enabled
+          - fqbn: ATTinyCore:avr:attinyx5:chip=85,LTO=enable,clock=8internal,eesave=disable,bod=disable,millis=enabled
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: ATTinyCore_avr_attinyx5
 
           # Arduino AVR Boards
-          - arduino:avr:uno                  # Arduino Uno
-          - arduino:avr:nano                 # Arduino Nano
+          - fqbn: arduino:avr:uno                  # Arduino Uno
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino_avr_uno
+          - fqbn: arduino:avr:nano                 # Arduino Nano
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__avr__nano
 
           # Arduino MegaAVR Boards
-          - arduino:megaavr:uno2018          # Arduino Uno WiFi Rev2
-          - arduino:megaavr:nona4809         # Arduino Nano Every
+          - fqbn: arduino:megaavr:uno2018          # Arduino Uno WiFi Rev2
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__megaavr__uno2018
+          - fqbn: arduino:megaavr:nona4809         # Arduino Nano Every
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__megaavr__uno2018
 
           # Arduino SAM Boards
-          - arduino:sam:arduino_due_x_dbg    # Arduino Due (Programming Port)
+          - fqbn: arduino:sam:arduino_due_x_dbg    # Arduino Due (Programming Port)
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__sam__arduino_due
 
           # Arduino SAMD Boards
-          - arduino:samd:mkrzero             # Arduino MKRZERO
-          - arduino:samd:nano_33_iot         # Arduino NANO 33 IoT
+          - fqbn: arduino:samd:mkrzero             # Arduino MKRZERO
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino_samd_mkrzero
+          - fqbn: arduino:samd:nano_33_iot         # Arduino NANO 33 IoT
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__samd__nano_33_iot
 
           # ESP8266 - Community-driven BSP support
-          - esp8266:esp8266:generic              # Generic ESP8266 Module
-          - esp8266:esp8266:esp8285              # Generic ESP8285 Module
-          - esp8266:esp8266:espduino             # ESPDuino (ESP-13 Module)
-          - esp8266:esp8266:espino               # ESPino (ESP-12 Module)
-          - esp8266:esp8266:d1_mini              # LOLIN(WEMOS) D1 R2 & mini
+          - fqbn: esp8266:esp8266:generic              # Generic ESP8266 Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp8266__generic
+          - fqbn: esp8266:esp8266:esp8285              # Generic ESP8285 Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp8266__esp8285
+          - fqbn: esp8266:esp8266:espduino             # ESPDuino (ESP-13 Module)
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp8266__espduino
+          - fqbn: esp8266:esp8266:espino               # ESPino (ESP-12 Module)
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp8266__espino
+          - fqbn: esp8266:esp8266:d1_mini              # LOLIN(WEMOS) D1 R2 & mini
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp8266__d1_mini
 
           # Espressif ESP32 BSP
-          - esp32:esp32:esp32                    # ESP32 Dev Module
-          - esp32:esp32:esp32c3                  # ESP32C3 Dev Module
-          - esp32:esp32:esp32s2                  # ESP32S2 Dev Module
-          - esp32:esp32:esp32s3                  # ESP32S3 Dev Module
+          - fqbn: esp32:esp32:esp32                    # ESP32 Dev Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp32__esp32
+          - fqbn: esp32:esp32:esp32c3                  # ESP32C3 Dev Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp32__esp32c3
+          - fqbn: esp32:esp32:esp32s2                  # ESP32S2 Dev Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp32__esp32s2
+          - fqbn: esp32:esp32:esp32s3                  # ESP32S3 Dev Module
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__esp32__esp32s3
 
           # Arduino MBED-based devices
-          - arduino:mbed_edge:edge_control       # Arduino Edge Control
-          - arduino:mbed_nano:nano33ble          # Arduino Nano 33 BLE
-          - arduino:mbed_nano:nanorp2040connect  # Arduino Nano RP2040 Connect
-          - arduino:mbed_portenta:envie_m7       # Arduino Portenta H7 (M7 core)
-          # - arduino:mbed_portenta:envie_m4       # Arduino Portenta H7 (M4 core)
-          - arduino:mbed_rp2040:pico             # Raspberry Pi Pico
-          - arduino:mbed_nicla:nicla_sense       # Nicla Sense ME
-          - arduino:mbed_nicla:nicla_vision      # Nicla Vision
+          - fqbn: arduino:mbed_edge:edge_control       # Arduino Edge Control
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_edge__edge_control
+          - fqbn: arduino:mbed_nano:nano33ble          # Arduino Nano 33 BLE
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_nano__nano33ble
+          - fqbn: arduino:mbed_nano:nanorp2040connect  # Arduino Nano RP2040 Connect
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_nano__nanorp2040connect
+          - fqbn: arduino:mbed_portenta:envie_m7       # Arduino Portenta H7 (M7 core)
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_portenta__envie_m7
+          - fqbn: arduino:mbed_rp2040:pico             # Raspberry Pi Pico
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_rp2040__pico
+          - fqbn: arduino:mbed_nicla:nicla_sense       # Nicla Sense ME
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_nicla__nicla_sense
+          - fqbn: arduino:mbed_nicla:nicla_vision      # Nicla Vision
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__mbed_nicla__nicla_vision
 
-          # # The following boards are explicitly NOT supported:
-          # # Arduino Portenta X8 -- Requires custom library SerialRPC to use serial
-          # # Arduino PRIMO -- Compiler does not support C++11
+            # # The following boards are explicitly NOT supported:
+            # # Arduino Portenta X8 -- Requires custom library SerialRPC to use serial
+            # # Arduino PRIMO       -- Compiler does not support C++11
 
 
     steps:
@@ -125,7 +148,7 @@ jobs:
       - name: Compile
         uses: arduino/compile-sketches@8fd840319c8c9b8617a42cc731092a3350599f35
         with:
-          fqbn: ${{ matrix.fqbn }}
+          fqbn: ${{ matrix.board.fqbn }}
           platforms: |
             - source-url: https://downloads.arduino.cc/packages/package_index.json
               name: arduino:avr
@@ -162,7 +185,8 @@ jobs:
           enable-warnings-report: true
 
       - name: Upload sketches report as workflow artifact
-        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
-          name: ${{ env.SKETCHES_REPORTS_ARTIFACT_NAME }}
+          if-no-files-found: error
+          name: sketches-report--${{ matrix.board.SKETCHES_REPORTS_ARTIFACT_SUFFIX }}
           path: ${{ env.SKETCHES_REPORTS_PATH }}
