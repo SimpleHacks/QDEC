@@ -60,7 +60,7 @@ jobs:
           - fqbn: arduino:megaavr:uno2018          # Arduino Uno WiFi Rev2
             SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__megaavr__uno2018
           - fqbn: arduino:megaavr:nona4809         # Arduino Nano Every
-            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__megaavr__uno2018
+            SKETCHES_REPORTS_ARTIFACT_SUFFIX: arduino__megaavr__nona4809
 
           # Arduino SAM Boards
           - fqbn: arduino:sam:arduino_due_x_dbg    # Arduino Due (Programming Port)
