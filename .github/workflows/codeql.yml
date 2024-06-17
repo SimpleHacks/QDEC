@@ -61,7 +61,7 @@ jobs:
           build-mode: ${{ matrix.build-mode }}
 
       - name: Compile for ESP32
-        uses: arduino/compile-sketches@8fd840319c8c9b8617a42cc731092a3350599f35
+        uses: arduino/compile-sketches@1bc7c2087fc21db8cb58b052288e729263ce50a5
         with:
           fqbn: esp32:esp32:esp32 # ESP32 Dev Module
           platforms: |
