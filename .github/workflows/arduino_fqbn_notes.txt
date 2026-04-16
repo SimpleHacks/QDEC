@@ -344,6 +344,8 @@
           # ***************************************************************************************
           # =======================================================================================
           # Default Arduino BSP support
+          # BSP URL (Due to azduino.com errors): https://raw.githubusercontent.com/SpenceKonde/ReleaseScripts/243473478d933666ff34369b55ade5e781261684/package_drazzy.com_index.json
+          #         which uses spencekondetoolchains.s3.amazonaws.com:443
           # BSP URL --  http://drazzy.com/package_drazzy.com_index.json
           # ATTinyCore:avr: -- https://github.com/SpenceKonde/ATTinyCore/blob/7f7cd4edee26bdfea62d7cea4933a61ee69c8d5e/avr/boards.txt
           # =======================================================================================

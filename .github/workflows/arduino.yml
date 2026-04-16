@@ -145,6 +145,7 @@ jobs:
             ppa.launchpad.net:80
             pypi.org:443
             raw.githubusercontent.com:443
+            spencekondetoolchains.s3.amazonaws.com:443
 
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
@@ -176,7 +177,10 @@ jobs:
               name: esp8266:esp8266
             - source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
               name: esp32:esp32
-            - source-url: http://drazzy.com/package_drazzy.com_index.json
+            # Temporary replacement due to azduino failures
+            # - source-url: http://drazzy.com/package_drazzy.com_index.json
+            #   name: ATTinyCore:avr
+            - source-url: https://raw.githubusercontent.com/SpenceKonde/ReleaseScripts/243473478d933666ff34369b55ade5e781261684/package_drazzy.com_index.json
               name: ATTinyCore:avr
             - source-url: https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json
               name: MegaCoreX:megaavr
