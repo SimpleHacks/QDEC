@@ -148,7 +148,7 @@ jobs:
             spencekondetoolchains.s3.amazonaws.com:443
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
       
       - name: Compile
         uses: arduino/compile-sketches@8ac27e99289705c4abec832089575d687b859227
